@@ -23,15 +23,14 @@ class ViewController: UIViewController {
             textLabel.text = ""
             calculator.textScreen = ""
         }
-        textLabel.text!.append(numberText)
+        textLabel.text?.append(numberText)
         calculator.textScreen.append(numberText)
-        print(calculator.textScreen)
+        calculator.addingNumber()
     }
     // Addition Button
     @IBAction func tappedAdditionButton(_ sender: UIButton) {
         if calculator.canAddOperator {
-            textLabel.text!.append(" + ")
-            calculator.textScreen.append(" + ")
+            calculator.addingAddition()
         } else {
             operatorAlreadyPresent()
         }
@@ -39,7 +38,7 @@ class ViewController: UIViewController {
     // Substract Button
     @IBAction func tappedSubstractionButton(_ sender: UIButton) {
         if calculator.canAddOperator {
-            textLabel.text!.append(" - ")
+            calculator.addingSubstraction()
         } else {
             operatorAlreadyPresent()
         }
@@ -47,14 +46,14 @@ class ViewController: UIViewController {
     // Multiplication Button
     @IBAction func tappedMultiplicationButton(_ sender: UIButton) {
         if calculator.canAddOperator {
-            textLabel.text!.append(" x ")
+            calculator.addingMultiplication()
         } else {
             operatorAlreadyPresent()
         }
     }
     // Division button
     @IBAction func tappedDivisionButton(_ sender: UIButton) {if calculator.canAddOperator {
-        textLabel.text!.append(" / ")
+            calculator.addingDivision()
     } else {
         operatorAlreadyPresent()
         }
@@ -81,6 +80,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        receivingNotification(name: "updateScreen")
     }
     func operatorAlreadyPresent() {
         let alertVC = UIAlertController(title: "Error!", message: "Un operateur est déja mis !", preferredStyle: .alert)
@@ -88,4 +88,13 @@ class ViewController: UIViewController {
         self.present(alertVC, animated: true, completion: nil)
     }
     var calculator = Calculator()
+    private func receivingNotification(name: String) {
+        let notificationName = Notification.Name(rawValue: name)
+        let selector = Selector((name))
+        NotificationCenter.default.addObserver(self, selector: selector, name: notificationName, object: nil)
+    }
+
+    @objc func updateScreen() {
+        textLabel.text = calculator.textScreen
+    }
 }

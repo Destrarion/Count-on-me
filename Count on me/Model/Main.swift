@@ -9,13 +9,32 @@
 import Foundation
 
 public class Calculator {
-    var textScreen : String
+    var textScreen: String
     @objc func addingMultiplication(notification: NSNotification) {
         textScreen += " x "
         print(textScreen)
     }
     init() {
         textScreen = ""
+    }
+    func addingNumber() {
+        print("hello")
+    }
+    func addingAddition() {
+        textScreen.append(" + ")
+        sendNotification(name: "updateScreen")
+    }
+    func addingSubstraction() {
+        textScreen.append(" - ")
+        sendNotification(name: "updateScreen")
+    }
+    func addingMultiplication() {
+        textScreen.append(" x ")
+        sendNotification(name: "updateScreen")
+    }
+    func addingDivision() {
+        textScreen.append(" / ")
+        sendNotification(name: "updateScreen")
     }
     func startOperation() -> String {
         // Create local copy of operations
@@ -37,6 +56,7 @@ public class Calculator {
             }
             operationsToReduce = Array(operationsToReduce.dropFirst(3))
             operationsToReduce.insert("\(result)", at: 0)
+            sendNotification(name: "updateScreen")
         }
         print("fin de l'operation")
         let result = (" = \(operationsToReduce.first!)")
@@ -60,5 +80,10 @@ public class Calculator {
     }
     var expressionHaveResult: Bool {
         return textScreen.firstIndex(of: "=") != nil
+    }
+    private func sendNotification(name: String) {
+        let name = Notification.Name(rawValue: name)
+        let notification = Notification(name: name)
+        NotificationCenter.default.post(notification)
     }
 }
