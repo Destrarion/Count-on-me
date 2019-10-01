@@ -12,8 +12,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var textView: UIView!
     @IBOutlet var numberButtons: [UIButton]!
     @IBOutlet weak var textLabel: UILabel!
-    @IBAction func acButton(_ sender: UIButton) {
-    }
+
     // View actions
     @IBAction func tappedNumberButton(_ sender: UIButton) {
         guard let numberText = sender.title(for: .normal) else {
@@ -25,7 +24,6 @@ class ViewController: UIViewController {
         }
         textLabel.text?.append(numberText)
         calculator.textScreen.append(numberText)
-        calculator.addingNumber()
     }
     // Addition Button
     @IBAction func tappedAdditionButton(_ sender: UIButton) {

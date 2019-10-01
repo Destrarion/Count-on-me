@@ -17,9 +17,6 @@ public class Calculator {
     init() {
         textScreen = ""
     }
-    func addingNumber() {
-        print("hello")
-    }
     func addingAddition() {
         textScreen.append(" + ")
         sendNotification(name: "updateScreen")

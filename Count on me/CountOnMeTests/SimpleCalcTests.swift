@@ -7,28 +7,23 @@
 //
 
 import XCTest
-@testable import SimpleCalc
+@testable import CountOnMe
 
 class SimpleCalcTests: XCTestCase {
-
-    override func setUp() {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+    let calculator = Calculator()
+    
+    func testGivenScreenShowNothing_WhenAdding1OnTextScreen_ThenTextScreenShow1() {
+        let addOne = 1
+        calculator.textScreen.append("\(addOne)")
+        XCTAssert(calculator.textScreen == "1")
     }
-
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    func testGiven3Elements_WhenDecomposingIntoTable_ThenOperatorIsOnPosition2() {
+        calculator.textScreen = "2 + 5"
+        var textScreenDecomposate = calculator.elements
+        XCTAssert(textScreenDecomposate[1] == "+")
     }
-
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    func testGiven1ElementTextScreen_WhenExpressionHaveEnoughElement_ThenReturnTrue() {
+        calculator.textScreen = "22  + 4"
+        XCTAssert(calculator.expressionHaveEnoughElement)
     }
-
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
-    }
-
 }
