@@ -10,10 +10,6 @@ import Foundation
 
 public class Calculator {
     var textScreen: String
-    @objc func addingMultiplication(notification: NSNotification) {
-        textScreen += " x "
-        print(textScreen)
-    }
     init() {
         textScreen = ""
     }
