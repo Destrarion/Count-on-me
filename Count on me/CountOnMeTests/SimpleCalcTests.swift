@@ -50,4 +50,9 @@ class SimpleCalcTests: XCTestCase {
         calculator.textScreen = "56 - 24"
         calculator.startOperation()
     }
+    func testGivenCalculWithAdditionAndMultiplication_WhenStartOperation_ThenStartMultiplicationFirst() {
+        calculator.textScreen = " 2 + 3 x 4"
+        let getresult = calculator.startOperation()
+        XCTAssertTrue(getresult == " = 14.0")
+    }
 }

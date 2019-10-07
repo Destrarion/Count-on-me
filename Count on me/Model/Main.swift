@@ -33,8 +33,30 @@ public class Calculator {
         // Create local copy of operations
         var operationsToReduce = elements
         print("sa continue")
-        // Iterate over operations while an operand still here
-        // new func here
+        print(operationsToReduce)
+        var countPosition = 0
+        var result: Double
+        // looking for multiplication and division
+        for index in operationsToReduce {
+            print("la boucle commence")
+            if index.hasPrefix("x") || index.hasPrefix("/") {
+                print("priorité opération")
+                let operand = operationsToReduce[countPosition]
+                let left = Double(operationsToReduce[countPosition - 1])!
+                let right = Double(operationsToReduce[countPosition + 1])!
+                switch operand {
+                case "x": result = left * right
+                case "/": result = left / right
+                default: fatalError("Unknown operator !")
+                }
+                operationsToReduce[countPosition - 1] = "\(result)"
+                operationsToReduce.remove(at: countPosition)
+                operationsToReduce.remove(at: countPosition)
+            } else {
+                countPosition += 1
+            }
+            //after operation priorities
+        }
         while operationsToReduce.count > 1 {
             let left = Double(operationsToReduce[0])!
             let operand = operationsToReduce[1]
@@ -43,17 +65,18 @@ public class Calculator {
             switch operand {
             case "+": result = left + right
             case "-": result = left - right
-            case "x": result = left * right
-            case "/": result = left / right
             default: fatalError("Unknown operator !")
             }
+            print(result)
             operationsToReduce = Array(operationsToReduce.dropFirst(3))
             operationsToReduce.insert("\(result)", at: 0)
             sendNotification(name: "updateScreen")
+            print("print operation to result count\(result)")
         }
-        print("fin de l'operation")
-        let result = (" = \(operationsToReduce.first!)")
-        return result
+        print("print count position \(countPosition)")
+        let finalResult = (" = \(operationsToReduce.first!)")
+        print(finalResult)
+        return finalResult
     }
     var elements: [String] {
         print("variable element executé")
@@ -79,4 +102,5 @@ public class Calculator {
         let notification = Notification(name: name)
         NotificationCenter.default.post(notification)
     }
+
 }

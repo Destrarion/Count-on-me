@@ -69,7 +69,7 @@ class ViewController: UIViewController {
             return self.present(alertVC, animated: true, completion: nil)
         }
         let resultOperationdone = calculator.startOperation()
-        print("la variable resultOperation est lancée")
+        print("la variable resultOperation est fini")
         print(resultOperationdone)
         textLabel.text!.append(resultOperationdone)
         print("le text est ajouté au label")
