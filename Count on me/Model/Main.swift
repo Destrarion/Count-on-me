@@ -34,48 +34,23 @@ public class Calculator {
         var operationsToReduce = elements
         print("sa continue")
         print(operationsToReduce)
-        var countPosition = 0
-        var result: Double
         // looking for multiplication and division
-        for index in operationsToReduce {
+        for (count, index) in operationsToReduce.enumerated() {
             print("la boucle commence")
             if index.hasPrefix("x") || index.hasPrefix("/") {
                 print("priorité opération")
-                let operand = operationsToReduce[countPosition]
-                let left = Double(operationsToReduce[countPosition - 1])!
-                let right = Double(operationsToReduce[countPosition + 1])!
-                switch operand {
-                case "x": result = left * right
-                case "/": result = left / right
-                default: fatalError("Unknown operator !")
-                }
-                operationsToReduce[countPosition - 1] = "\(result)"
-                operationsToReduce.remove(at: countPosition)
-                operationsToReduce.remove(at: countPosition)
-            } else {
-                countPosition += 1
+                print(operationsToReduce)
+                operationsToReduce = reduceOperation(operationToReduce: operationsToReduce, index: count)
+                print("after checking priority multiplication : \(operationsToReduce)")
             }
-            //after operation priorities
+        //after operation priorities
         }
         while operationsToReduce.count > 1 {
-            let left = Double(operationsToReduce[0])!
-            let operand = operationsToReduce[1]
-            let right = Double(operationsToReduce[2])!
-            let result: Double
-            switch operand {
-            case "+": result = left + right
-            case "-": result = left - right
-            default: fatalError("Unknown operator !")
-            }
-            print(result)
-            operationsToReduce = Array(operationsToReduce.dropFirst(3))
-            operationsToReduce.insert("\(result)", at: 0)
-            sendNotification(name: "updateScreen")
-            print("print operation to result count\(result)")
+            operationsToReduce = reduceOperation(operationToReduce: operationsToReduce, index: 0)
+            print("print while for addition : \(operationsToReduce)")
         }
-        print("print count position \(countPosition)")
+        sendNotification(name: "updateScreen")
         let finalResult = (" = \(operationsToReduce.first!)")
-        print(finalResult)
         return finalResult
     }
     var elements: [String] {
@@ -103,4 +78,28 @@ public class Calculator {
         NotificationCenter.default.post(notification)
     }
 
+    func reduceOperation(operationToReduce: [String], index: Int) -> [String] {
+        print("parametre de reduceOperation, operationToReduce: \(operationToReduce), index : \(index)")
+        var count = 1
+        if index > 0 {
+            count = index
+        }
+        var result: Double
+        let operand = operationToReduce[count]
+        guard let left = Double(operationToReduce[count - 1]) else {return [operationToReduce[count - 1]]}
+        guard let right = Double(operationToReduce[count + 1]) else {return [operationToReduce[count + 1]]}
+        switch operand {
+        case "x": result = left * right
+        case "/": result = left / right
+        case "+": result = left + right
+        case "-": result = left - right
+        default: fatalError("Unknown operator !")
+        }
+        print("result :\(result)")
+        var operation = operationToReduce
+        operation[count - 1] = "\(result)"
+        operation.remove(at: count)
+        operation.remove(at: count)
+        return operation
+    }
 }

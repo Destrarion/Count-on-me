@@ -253,7 +253,7 @@
                                             <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
                                         <connections>
-                                            <action selector="acButton:" destination="eqK-jh-KKu" eventType="touchUpInside" id="d2j-jL-xet"/>
+                                            <action selector="acButton:" destination="eqK-jh-KKu" eventType="touchUpInside" id="Rax-AX-LtL"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3zr-HC-0N9">

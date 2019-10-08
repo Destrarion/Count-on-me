@@ -56,6 +56,10 @@ class ViewController: UIViewController {
         operatorAlreadyPresent()
         }
     }
+    @IBAction func acButton(_ sender: UIButton) {
+        calculator.textScreen = ""
+        updateScreen()
+    }
     //Result Button
     @IBAction func tappedEqualButton(_ sender: UIButton) {
         guard calculator.expressionIsCorrect else {
