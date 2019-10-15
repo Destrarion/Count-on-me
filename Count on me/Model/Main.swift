@@ -50,7 +50,7 @@ public class Calculator {
             print("print while for addition : \(operationsToReduce)")
         }
         sendNotification(name: "updateScreen")
-        let finalResult = (" = \(operationsToReduce.first!)")
+        let finalResult = " = \(operationsToReduce.first!)"
         return finalResult
     }
     var elements: [String] {
@@ -84,10 +84,10 @@ public class Calculator {
         if index > 0 {
             count = index
         }
-        var result: Double
+        var result: Float
         let operand = operationToReduce[count]
-        guard let left = Double(operationToReduce[count - 1]) else {return [operationToReduce[count - 1]]}
-        guard let right = Double(operationToReduce[count + 1]) else {return [operationToReduce[count + 1]]}
+        guard let left = Float(operationToReduce[count - 1]) else {return [operationToReduce[count - 1]]}
+        guard let right = Float(operationToReduce[count + 1]) else {return [operationToReduce[count + 1]]}
         switch operand {
         case "x": result = left * right
         case "/": result = left / right
@@ -95,11 +95,16 @@ public class Calculator {
         case "-": result = left - right
         default: fatalError("Unknown operator !")
         }
+        result = roundingValue(value: result)
         print("result :\(result)")
         var operation = operationToReduce
         operation[count - 1] = "\(result)"
         operation.remove(at: count)
         operation.remove(at: count)
         return operation
+    }
+    func roundingValue(value: Float) -> Float {
+        let roundedValue = round ( value * 10000 ) / 10000
+        return roundedValue
     }
 }
