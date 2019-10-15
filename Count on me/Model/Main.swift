@@ -6,7 +6,7 @@
 //  Copyright © 2019 Vincent Saluzzo. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 public class Calculator {
     var textScreen: String
@@ -84,17 +84,10 @@ public class Calculator {
         if index > 0 {
             count = index
         }
-        var result: Float
         let operand = operationToReduce[count]
         guard let left = Float(operationToReduce[count - 1]) else {return [operationToReduce[count - 1]]}
         guard let right = Float(operationToReduce[count + 1]) else {return [operationToReduce[count + 1]]}
-        switch operand {
-        case "x": result = left * right
-        case "/": result = left / right
-        case "+": result = left + right
-        case "-": result = left - right
-        default: fatalError("Unknown operator !")
-        }
+        var result: Float = calculateOperation(left: left, operand: operand, right: right)
         result = roundingValue(value: result)
         print("result :\(result)")
         var operation = operationToReduce
@@ -102,6 +95,17 @@ public class Calculator {
         operation.remove(at: count)
         operation.remove(at: count)
         return operation
+    }
+    func calculateOperation(left: Float, operand: String, right: Float) -> Float {
+        var result: Float
+        switch operand {
+        case "x": result = left * right
+        case "/": result = left / right
+        case "+": result = left + right
+        case "-": result = left - right
+        default: fatalError("Unknown operator !")
+        }
+        return result
     }
     func roundingValue(value: Float) -> Float {
         let roundedValue = round ( value * 10000 ) / 10000

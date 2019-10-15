@@ -51,4 +51,15 @@ class SimpleCalcTests: XCTestCase {
         let getresult = calculator.startOperation()
         XCTAssertTrue(getresult == " = 14.0")
     }
+    func testGivenNumberWithDecimal_WhenUsingRoundingValue_ThenRoundingThenValueToFourNumberAfterDot() {
+        let numberOne: Float = 5.86974
+        let numberTwo: Float = 2.32542
+        var result: Float = numberOne - numberTwo
+        result = calculator.roundingValue(value: result)
+        XCTAssertTrue(result == 3.5443)
+    }
+    func testGivenTextScreenWithValueAndEqual_WhenHaveExpressionIsUsed_ThenReturnBoolTrue() {
+        calculator.textScreen = "12 + 3 = 15"
+        XCTAssertTrue(calculator.expressionHaveResult)
+    }
 }
