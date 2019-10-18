@@ -14,32 +14,42 @@ public class Calculator {
         textScreen = ""
     }
     func addingAddition() {
-        textScreen.append(" + ")
+        ifLastTextisOperator()
+        textScreen +=  " + "
         sendNotification(name: "updateScreen")
     }
     func addingSubstraction() {
-        textScreen.append(" - ")
+        ifLastTextisOperator()
+        textScreen +=  " - "
         sendNotification(name: "updateScreen")
     }
     func addingMultiplication() {
-        textScreen.append(" x ")
+        ifLastTextisOperator()
+        textScreen +=  " x "
         sendNotification(name: "updateScreen")
     }
     func addingDivision() {
-        textScreen.append(" / ")
+        ifLastTextisOperator()
+        textScreen +=  " / "
         sendNotification(name: "updateScreen")
     }
-    func startOperation() -> String {
-        // Create local copy of operations
+    func startOperation() -> Any {
+        guard expressionIsCorrect else {
+            let alertVC = UIAlertController(title: "Error!", message: "Enter a correct expression!", preferredStyle: .alert)
+            alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+            return alertVC.present(alertVC, animated: true, completion: nil)
+        }
+        guard expressionHaveEnoughElement else {
+            let alertVC = UIAlertController(title: "Error!", message: "Start a new calcul !", preferredStyle: .alert)
+            alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+            return alertVC.present(alertVC, animated: true, completion: nil)
+        }
         var operationsToReduce = elements
-        print("sa continue")
         print(operationsToReduce)
         // looking for multiplication and division
         for (count, index) in operationsToReduce.enumerated() {
-            print("la boucle commence")
             if index.hasPrefix("x") || index.hasPrefix("/") {
                 print("priorité opération")
-                print(operationsToReduce)
                 operationsToReduce = reduceOperation(operationToReduce: operationsToReduce, index: count)
                 print("after checking priority multiplication : \(operationsToReduce)")
             }
@@ -47,30 +57,23 @@ public class Calculator {
         }
         while operationsToReduce.count > 1 {
             operationsToReduce = reduceOperation(operationToReduce: operationsToReduce, index: 0)
-            print("print while for addition : \(operationsToReduce)")
         }
         sendNotification(name: "updateScreen")
         let finalResult = " = \(operationsToReduce.first!)"
         return finalResult
     }
     var elements: [String] {
-        print("variable element executé")
         return textScreen.split(separator: " ").map { "\($0)" }
     }
     // Error check computed variables
-    var expressionIsCorrect: Bool {
-        return elements.last != "+" && elements.last != "-"
-    }
     var expressionHaveEnoughElement: Bool {
-        print("element a bien 3 élément")
         return elements.count >= 3
-    }
-    var canAddOperator: Bool {
-        print("peut bien ajouté un élément")
-        return elements.last != "+" && elements.last != "-"
     }
     var expressionHaveResult: Bool {
         return textScreen.firstIndex(of: "=") != nil
+    }
+    var expressionIsCorrect: Bool {
+        return elements.last != "+" && elements.last != "-" && elements.last != "x" && elements.last != "/"
     }
     private func sendNotification(name: String) {
         let name = Notification.Name(rawValue: name)
@@ -89,7 +92,6 @@ public class Calculator {
         guard let right = Float(operationToReduce[count + 1]) else {return [operationToReduce[count + 1]]}
         var result: Float = calculateOperation(left: left, operand: operand, right: right)
         result = roundingValue(value: result)
-        print("result :\(result)")
         var operation = operationToReduce
         operation[count - 1] = "\(result)"
         operation.remove(at: count)
@@ -110,5 +112,13 @@ public class Calculator {
     func roundingValue(value: Float) -> Float {
         let roundedValue = round ( value * 10000 ) / 10000
         return roundedValue
+    }
+    func ifLastTextisOperator() {
+        let textOnScreen = elements
+        if textOnScreen.last == "+" || textOnScreen.last == "-" || textOnScreen.last == "x" || textOnScreen.last == "/" {
+            textScreen.removeLast()
+            textScreen.removeLast()
+            textScreen.removeLast()
+        }
     }
 }

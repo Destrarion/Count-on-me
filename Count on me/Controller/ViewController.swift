@@ -27,34 +27,19 @@ class ViewController: UIViewController {
     }
     // Addition Button
     @IBAction func tappedAdditionButton(_ sender: UIButton) {
-        if calculator.canAddOperator {
-            calculator.addingAddition()
-        } else {
-            operatorAlreadyPresent()
-        }
+        calculator.addingAddition()
     }
     // Substract Button
     @IBAction func tappedSubstractionButton(_ sender: UIButton) {
-        if calculator.canAddOperator {
-            calculator.addingSubstraction()
-        } else {
-            operatorAlreadyPresent()
-        }
+        calculator.addingSubstraction()
     }
     // Multiplication Button
     @IBAction func tappedMultiplicationButton(_ sender: UIButton) {
-        if calculator.canAddOperator {
-            calculator.addingMultiplication()
-        } else {
-            operatorAlreadyPresent()
-        }
+        calculator.addingMultiplication()
     }
     // Division button
-    @IBAction func tappedDivisionButton(_ sender: UIButton) {if calculator.canAddOperator {
-            calculator.addingDivision()
-    } else {
-        operatorAlreadyPresent()
-        }
+    @IBAction func tappedDivisionButton(_ sender: UIButton) {
+        calculator.addingDivision()
     }
     @IBAction func acButton(_ sender: UIButton) {
         calculator.textScreen = ""
@@ -62,21 +47,13 @@ class ViewController: UIViewController {
     }
     //Result Button
     @IBAction func tappedEqualButton(_ sender: UIButton) {
-        guard calculator.expressionIsCorrect else {
-            let alertVC = UIAlertController(title: "Error!", message: "Enter a correct expression!", preferredStyle: .alert)
-            alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-            return self.present(alertVC, animated: true, completion: nil)
-        }
         guard calculator.expressionHaveEnoughElement else {
             let alertVC = UIAlertController(title: "Error!", message: "Start a new calcul !", preferredStyle: .alert)
             alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
             return self.present(alertVC, animated: true, completion: nil)
         }
         let resultOperationdone = calculator.startOperation()
-        print("la variable resultOperationdone est fini")
-        print(resultOperationdone)
-        textLabel.text!.append(resultOperationdone)
-        print("le text est ajouté au label")
+        textLabel.text!.append("\(resultOperationdone)")
     }
     // View Life cycles
     override func viewDidLoad() {
