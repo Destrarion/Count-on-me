@@ -50,13 +50,13 @@ public class Calculator {
         for (count, index) in operationsToReduce.enumerated() {
             if index.hasPrefix("x") || index.hasPrefix("/") {
                 print("priorité opération")
-                operationsToReduce = reduceOperation(operationToReduce: operationsToReduce, index: count)
+                operationsToReduce = reduceOperation(operationToReduce: operationsToReduce, index: count - valueRemoved)
                 print("after checking priority multiplication : \(operationsToReduce)")
             }
         //after operation priorities
         }
         while operationsToReduce.count > 1 {
-            operationsToReduce = reduceOperation(operationToReduce: operationsToReduce, index: 0)
+            operationsToReduce = reduceOperation(operationToReduce: operationsToReduce, index: 0 - valueRemoved)
         }
         sendNotification(name: "updateScreen")
         let finalResult = " = \(operationsToReduce.first!)"
@@ -80,7 +80,7 @@ public class Calculator {
         let notification = Notification(name: name)
         NotificationCenter.default.post(notification)
     }
-
+    var valueRemoved = 0
     func reduceOperation(operationToReduce: [String], index: Int) -> [String] {
         print("parametre de reduceOperation, operationToReduce: \(operationToReduce), index : \(index)")
         var count = 1
@@ -95,7 +95,11 @@ public class Calculator {
         var operation = operationToReduce
         operation[count - 1] = "\(result)"
         operation.remove(at: count)
+        valueRemoved += 1
+        print("valueRemoved +1")
         operation.remove(at: count)
+        valueRemoved += 1
+        print("valueRemoved +1")
         return operation
     }
     func calculateOperation(left: Float, operand: String, right: Float) -> Float {
