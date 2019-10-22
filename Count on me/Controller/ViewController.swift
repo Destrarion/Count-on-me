@@ -46,14 +46,15 @@ class ViewController: UIViewController {
     }
     //Result Button
     @IBAction func tappedEqualButton(_ sender: UIButton) {
-        let resultOperationdone = calculator.startOperation()
-        textLabel.text!.append("\(resultOperationdone)")
+        calculator.startOperation()
     }
     // View Life cycles
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         receivingNotification(name: "updateScreen")
+        receivingNotification(name: "alertNotFinishingByNumber")
+        receivingNotification(name: "alertNotEnoughtElement")
     }
     var calculator = Calculator()
     private func receivingNotification(name: String) {
@@ -64,5 +65,17 @@ class ViewController: UIViewController {
 
     @objc func updateScreen() {
         textLabel.text = calculator.textScreen
+    }
+    @objc func alertNotEnoughtElement () {
+        guard calculator.expressionHaveEnoughElement else {
+            let alertVC = UIAlertController(title: "Error!", message: "Start a new calcul !", preferredStyle: .alert)
+            alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+            return self.present(alertVC, animated: true, completion: nil)
+        }
+    }
+    @objc func alertNotFinishingByNumber() {
+            let alertVC = UIAlertController(title: "Error!", message: "Enter a correct expression!", preferredStyle: .alert)
+            alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+            return self.present(alertVC, animated: true, completion: nil)
     }
 }

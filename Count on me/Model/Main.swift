@@ -33,34 +33,35 @@ public class Calculator {
         textScreen +=  " / "
         sendNotification(name: "updateScreen")
     }
-    func startOperation() -> Any {
-        guard expressionIsCorrect else {
-            let alertVC = UIAlertController(title: "Error!", message: "Enter a correct expression!", preferredStyle: .alert)
-            alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-            return alertVC.present(alertVC, animated: true, completion: nil)
-        }
-        guard expressionHaveEnoughElement else {
-            let alertVC = UIAlertController(title: "Error!", message: "Start a new calcul !", preferredStyle: .alert)
-            alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-            return alertVC.present(alertVC, animated: true, completion: nil)
-        }
-        var operationsToReduce = elements
-        print(operationsToReduce)
-        // looking for multiplication and division
-        for (count, index) in operationsToReduce.enumerated() {
-            if index.hasPrefix("x") || index.hasPrefix("/") {
-                print("priorité opération")
-                operationsToReduce = reduceOperation(operationToReduce: operationsToReduce, index: count - valueRemoved)
-                print("after checking priority multiplication : \(operationsToReduce)")
+    func startOperation() {
+        if expressionIsCorrect == true && expressionHaveEnoughElement {
+            var operationsToReduce = elements
+            print(operationsToReduce)
+            // looking for multiplication and division
+            for (count, index) in operationsToReduce.enumerated() {
+                if index.hasPrefix("x") || index.hasPrefix("/") {
+                    print("priorité opération")
+                    operationsToReduce = reduceOperation(operationToReduce: operationsToReduce, index: count - valueRemoved)
+                    print("after checking priority multiplication : \(operationsToReduce)")
+                }
+                //after operation priorities
             }
-        //after operation priorities
-        }
-        while operationsToReduce.count > 1 {
+            while operationsToReduce.count > 1 {
             operationsToReduce = reduceOperation(operationToReduce: operationsToReduce, index: 0 - valueRemoved)
+            }
+            let finalResult = " = \(operationsToReduce.first!)"
+            textScreen.append(finalResult)
+            sendNotification(name: "updateScreen")
+        } else{
+            if expressionIsCorrect == false {
+                sendNotification(name: "alertNotFinishingByNumber")
+                return
+            }
+            if expressionHaveEnoughElement == false {
+                sendNotification(name: "alertNotEnoughtElement")
+                return
+            }
         }
-        sendNotification(name: "updateScreen")
-        let finalResult = " = \(operationsToReduce.first!)"
-        return finalResult
     }
     var elements: [String] {
         return textScreen.split(separator: " ").map { "\($0)" }
@@ -71,6 +72,14 @@ public class Calculator {
     }
     var expressionHaveResult: Bool {
         return textScreen.firstIndex(of: "=") != nil
+    }
+    func correctExpression() {
+        print("function called")
+        let correctTextScreen = expressionIsCorrect
+        if correctTextScreen == false {
+            sendNotification(name: "alertNotFinishingByNumber")
+            print("sent notification")
+        }
     }
     var expressionIsCorrect: Bool {
         return elements.last != "+" && elements.last != "-" && elements.last != "x" && elements.last != "/"
