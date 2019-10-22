@@ -36,7 +36,6 @@ class SimpleCalcTests: XCTestCase {
     func testGivenEmptyTextScreen_WhenAddingNumberAndOperation_ThenWrittenInTextScreen() {
         calculator.textScreen = ""
         calculator.textScreen.append("12")
-        XCTAssert(calculator.canAddOperator == true)
         calculator.addingSubstraction()
         calculator.textScreen.append("3")
         calculator.addingAddition()

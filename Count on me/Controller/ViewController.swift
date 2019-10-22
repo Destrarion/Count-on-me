@@ -46,11 +46,6 @@ class ViewController: UIViewController {
     }
     //Result Button
     @IBAction func tappedEqualButton(_ sender: UIButton) {
-        guard calculator.expressionHaveEnoughElement else {
-            let alertVC = UIAlertController(title: "Error!", message: "Start a new calcul !", preferredStyle: .alert)
-            alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-            return self.present(alertVC, animated: true, completion: nil)
-        }
         let resultOperationdone = calculator.startOperation()
         textLabel.text!.append("\(resultOperationdone)")
     }
@@ -59,11 +54,6 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         receivingNotification(name: "updateScreen")
-    }
-    func operatorAlreadyPresent() {
-        let alertVC = UIAlertController(title: "Error!", message: "Un operateur est déja mis !", preferredStyle: .alert)
-        alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-        self.present(alertVC, animated: true, completion: nil)
     }
     var calculator = Calculator()
     private func receivingNotification(name: String) {
