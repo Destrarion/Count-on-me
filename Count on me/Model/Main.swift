@@ -52,7 +52,7 @@ public class Calculator {
             let finalResult = " = \(operationsToReduce.first!)"
             textScreen.append(finalResult)
             sendNotification(name: "updateScreen")
-        } else{
+        } else {
             if expressionIsCorrect == false {
                 sendNotification(name: "alertNotFinishingByNumber")
                 return
@@ -72,14 +72,6 @@ public class Calculator {
     }
     var expressionHaveResult: Bool {
         return textScreen.firstIndex(of: "=") != nil
-    }
-    func correctExpression() {
-        print("function called")
-        let correctTextScreen = expressionIsCorrect
-        if correctTextScreen == false {
-            sendNotification(name: "alertNotFinishingByNumber")
-            print("sent notification")
-        }
     }
     var expressionIsCorrect: Bool {
         return elements.last != "+" && elements.last != "-" && elements.last != "x" && elements.last != "/"
