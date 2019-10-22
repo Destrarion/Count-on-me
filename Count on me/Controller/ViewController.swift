@@ -11,8 +11,7 @@ import UIKit
 class ViewController: UIViewController {
     @IBOutlet weak var textView: UIView!
     @IBOutlet var numberButtons: [UIButton]!
-    @IBOutlet weak var textLabel: UILabel!
-
+    @IBOutlet weak var textLabel: UITextView!
     // View actions
     @IBAction func tappedNumberButton(_ sender: UIButton) {
         guard let numberText = sender.title(for: .normal) else {

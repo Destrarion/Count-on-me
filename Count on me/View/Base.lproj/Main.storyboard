@@ -25,18 +25,20 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Tjw-6Z-QZy" userLabel="Screen Calculator">
                                 <rect key="frame" x="20" y="64" width="374" height="387"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GgV-Mp-dRI" userLabel="Label">
-                                        <rect key="frame" x="374" y="0.0" width="0.0" height="0.0"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="45"/>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="dT6-lV-PaG">
+                                        <rect key="frame" x="0.0" y="0.0" width="374" height="387"/>
+                                        <color key="backgroundColor" red="0.32695651050000002" green="0.52467429639999996" blue="0.58041435480000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
+                                        <fontDescription key="fontDescription" type="system" pointSize="40"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                    </textView>
                                 </subviews>
                                 <color key="backgroundColor" red="0.32695651050000002" green="0.52467429639999996" blue="0.58041435480000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <constraints>
-                                    <constraint firstItem="GgV-Mp-dRI" firstAttribute="top" secondItem="Tjw-6Z-QZy" secondAttribute="top" id="04K-56-eUE"/>
-                                    <constraint firstItem="GgV-Mp-dRI" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Tjw-6Z-QZy" secondAttribute="leading" constant="20" symbolic="YES" id="Bmw-vA-DAC"/>
-                                    <constraint firstAttribute="trailing" secondItem="GgV-Mp-dRI" secondAttribute="trailing" id="YVL-zX-rIH"/>
+                                    <constraint firstAttribute="bottom" secondItem="dT6-lV-PaG" secondAttribute="bottom" id="0nd-rz-TUC"/>
+                                    <constraint firstItem="dT6-lV-PaG" firstAttribute="top" secondItem="Tjw-6Z-QZy" secondAttribute="top" id="E0Y-n2-7Fe"/>
+                                    <constraint firstItem="dT6-lV-PaG" firstAttribute="leading" secondItem="Tjw-6Z-QZy" secondAttribute="leading" id="EHP-Sh-JIO"/>
+                                    <constraint firstAttribute="trailing" secondItem="dT6-lV-PaG" secondAttribute="trailing" id="w2f-nC-eD8"/>
                                 </constraints>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="egU-K2-yFI" userLabel="Main Number">
@@ -276,7 +278,7 @@
                         <viewLayoutGuide key="safeArea" id="AWJ-Vl-uau"/>
                     </view>
                     <connections>
-                        <outlet property="textLabel" destination="GgV-Mp-dRI" id="mqp-KO-5Yd"/>
+                        <outlet property="textLabel" destination="dT6-lV-PaG" id="ypo-g3-QBz"/>
                         <outlet property="textView" destination="Tjw-6Z-QZy" id="YHu-cL-Gnt"/>
                         <outletCollection property="numberButtons" destination="W04-n1-Wen" collectionClass="NSMutableArray" id="F9G-eA-4ij"/>
                         <outletCollection property="numberButtons" destination="Raa-av-x4n" collectionClass="NSMutableArray" id="P52-Zx-bMS"/>
