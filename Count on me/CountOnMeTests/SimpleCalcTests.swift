@@ -47,8 +47,8 @@ class SimpleCalcTests: XCTestCase {
     }
     func testGivenCalculWithAdditionAndMultiplication_WhenStartOperation_ThenStartMultiplicationFirst() {
         calculator.textScreen = " 2 + 3 x 4"
-        let getresult = calculator.startOperation()
-        XCTAssertTrue(getresult == " = 14.0")
+        calculator.startOperation()
+        XCTAssertTrue(calculator.textScreen == " 2 + 3 x 4 = 14.0")
     }
     func testGivenNumberWithDecimal_WhenUsingRoundingValue_ThenRoundingThenValueToFourNumberAfterDot() {
         let numberOne: Float = 5.86974
@@ -60,5 +60,10 @@ class SimpleCalcTests: XCTestCase {
     func testGivenTextScreenWithValueAndEqual_WhenHaveExpressionIsUsed_ThenReturnBoolTrue() {
         calculator.textScreen = "12 + 3 = 15"
         XCTAssertTrue(calculator.expressionHaveResult)
+    }
+    func testGivenTextScreenNormalOperation_WhenIfLastTextIsOperator_ThenXCTAssertFalse() {
+        calculator.textScreen = "2 + 3 / "
+        calculator.ifLastTextisOperator()
+        XCTAssert(calculator.textScreen == "2 + 3")
     }
 }

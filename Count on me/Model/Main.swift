@@ -51,6 +51,7 @@ public class Calculator {
             }
             let finalResult = " = \(operationsToReduce.first!)"
             textScreen.append(finalResult)
+            print(textScreen)
             sendNotification(name: "updateScreen")
         } else {
             if expressionIsCorrect == false {
