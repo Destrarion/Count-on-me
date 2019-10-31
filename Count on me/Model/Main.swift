@@ -105,10 +105,8 @@ public class Calculator {
         operation[count - 1] = "\(result)"
         operation.remove(at: count)
         valueRemoved += 1
-        print("valueRemoved +1")
         operation.remove(at: count)
         valueRemoved += 1
-        print("valueRemoved +1")
         return operation
     }
     func calculateOperation(left: Float, operand: String, right: Float) -> Float {
@@ -139,7 +137,13 @@ public class Calculator {
     }
     func ifExpressionAlreadyHaveResult (operatorSymbol: String) {
         if expressionHaveResult == true {
+            valueRemoved = 0
             textScreen = "\(textResult) + \(operatorSymbol)"
         }
+    }
+    func clear (){
+        textScreen = ""
+        valueRemoved = 0
+        sendNotification(name: "updateScreen")
     }
 }

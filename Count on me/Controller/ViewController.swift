@@ -42,8 +42,7 @@ class ViewController: UIViewController {
         calculator.addingDivision()
     }
     @IBAction func acButton(_ sender: UIButton) {
-        calculator.textScreen = ""
-        updateScreen()
+        calculator.clear()
     }
     //Result Button
     @IBAction func tappedEqualButton(_ sender: UIButton) {
