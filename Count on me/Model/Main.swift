@@ -9,31 +9,36 @@
 import UIKit
 
 public class Calculator {
-    var textScreen: String
-    init() {
-        textScreen = ""
-    }
+    var textScreen: String = ""
+    var textResult: String = ""
     func addingAddition() {
+        ifExpressionAlreadyHaveResult(operatorSymbol: "+")
         ifLastTextisOperator()
         textScreen +=  " + "
         sendNotification(name: "updateScreen")
     }
     func addingSubstraction() {
+        ifExpressionAlreadyHaveResult(operatorSymbol: "-")
         ifLastTextisOperator()
         textScreen +=  " - "
         sendNotification(name: "updateScreen")
     }
     func addingMultiplication() {
+        ifExpressionAlreadyHaveResult(operatorSymbol: "x")
         ifLastTextisOperator()
         textScreen +=  " x "
         sendNotification(name: "updateScreen")
     }
     func addingDivision() {
+        ifExpressionAlreadyHaveResult(operatorSymbol: "/")
         ifLastTextisOperator()
         textScreen +=  " / "
         sendNotification(name: "updateScreen")
     }
     func startOperation() {
+        if expressionHaveResult == true {
+            return
+        }
         if expressionIsCorrect == true && expressionHaveEnoughElement {
             var operationsToReduce = elements
             print(operationsToReduce)
@@ -41,7 +46,8 @@ public class Calculator {
             for (count, index) in operationsToReduce.enumerated() {
                 if index.hasPrefix("x") || index.hasPrefix("/") {
                     print("priorité opération")
-                    operationsToReduce = reduceOperation(operationToReduce: operationsToReduce, index: count - valueRemoved)
+                    operationsToReduce = reduceOperation(operationToReduce: operationsToReduce,
+                                                         index: count - valueRemoved)
                     print("after checking priority multiplication : \(operationsToReduce)")
                 }
                 //after operation priorities
@@ -49,6 +55,7 @@ public class Calculator {
             while operationsToReduce.count > 1 {
             operationsToReduce = reduceOperation(operationToReduce: operationsToReduce, index: 0 - valueRemoved)
             }
+            textResult = operationsToReduce.first!
             let finalResult = " = \(operationsToReduce.first!)"
             textScreen.append(finalResult)
             print(textScreen)
@@ -121,10 +128,18 @@ public class Calculator {
     }
     func ifLastTextisOperator() {
         let textOnScreen = elements
-        if textOnScreen.last == "+" || textOnScreen.last == "-" || textOnScreen.last == "x" || textOnScreen.last == "/" {
+        if textOnScreen.last == "+" ||
+            textOnScreen.last == "-" ||
+            textOnScreen.last == "x" ||
+            textOnScreen.last == "/" {
             textScreen.removeLast()
             textScreen.removeLast()
             textScreen.removeLast()
+        }
+    }
+    func ifExpressionAlreadyHaveResult (operatorSymbol: String) {
+        if expressionHaveResult == true {
+            textScreen = "\(textResult) + \(operatorSymbol)"
         }
     }
 }

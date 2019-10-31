@@ -20,6 +20,7 @@ class ViewController: UIViewController {
         if calculator.expressionHaveResult {
             textLabel.text = ""
             calculator.textScreen = ""
+            calculator.textResult = ""
         }
         textLabel.text?.append(numberText)
         calculator.textScreen.append(numberText)
@@ -74,7 +75,9 @@ class ViewController: UIViewController {
         }
     }
     @objc func alertNotFinishingByNumber() {
-            let alertVC = UIAlertController(title: "Error!", message: "Enter a correct expression!", preferredStyle: .alert)
+            let alertVC = UIAlertController(title: "Error!",
+                                            message: "Enter a correct expression!",
+                                            preferredStyle: .alert)
             alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
             return self.present(alertVC, animated: true, completion: nil)
     }

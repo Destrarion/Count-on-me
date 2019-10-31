@@ -18,7 +18,7 @@ class SimpleCalcTests: XCTestCase {
     }
     func testGiven3Elements_WhenDecomposingIntoTable_ThenOperatorIsOnPosition2() {
         calculator.textScreen = "2 + 5"
-        var textScreenDecomposate = calculator.elements
+        let textScreenDecomposate = calculator.elements
         XCTAssert(textScreenDecomposate[1] == "+")
     }
     func testGiven1ElementTextScreen_WhenExpressionHaveEnoughElement_ThenReturnTrue() {
