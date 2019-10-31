@@ -141,9 +141,19 @@ public class Calculator {
             textScreen = "\(textResult) + \(operatorSymbol)"
         }
     }
-    func clear (){
+    func clear () {
         textScreen = ""
         valueRemoved = 0
+        sendNotification(name: "updateScreen")
+    }
+    func addingNumber (sender: UIButton) {
+    guard let numberText = sender.title(for: .normal) else {return}
+        if expressionHaveResult {
+            textScreen = ""
+            textResult = ""
+            sendNotification(name: "updateScreen")
+        }
+        textScreen.append(numberText)
         sendNotification(name: "updateScreen")
     }
 }
