@@ -12,8 +12,6 @@ import XCTest
 class SimpleCalcTests: XCTestCase {
     let calculator = Calculator()
     func testGivenScreenShowNothing_WhenAdding1OnTextScreen_ThenTextScreenShow1() {
-        let addOne = 1
-        calculator.textScreen.append("\(addOne)")
         XCTAssert(calculator.textScreen == "1")
     }
     func testGiven3Elements_WhenDecomposingIntoTable_ThenOperatorIsOnPosition2() {
@@ -34,16 +32,6 @@ class SimpleCalcTests: XCTestCase {
         XCTAssert(calculator.expressionHaveEnoughElement == true)
     }
     func testGivenEmptyTextScreen_WhenAddingNumberAndOperation_ThenWrittenInTextScreen() {
-        calculator.textScreen = ""
-        calculator.textScreen.append("12")
-        calculator.addingSubstraction()
-        calculator.textScreen.append("3")
-        calculator.addingAddition()
-        calculator.textScreen.append("4")
-        calculator.addingMultiplication()
-        calculator.textScreen.append("2")
-        calculator.addingDivision()
-        calculator.textScreen.append("2")
     }
     func testGivenCalculWithAdditionAndMultiplication_WhenStartOperation_ThenStartMultiplicationFirst() {
         calculator.textScreen = " 2 + 3 x 4"
@@ -63,7 +51,18 @@ class SimpleCalcTests: XCTestCase {
     }
     func testGivenTextScreenNormalOperation_WhenIfLastTextIsOperator_ThenXCTAssertFalse() {
         calculator.textScreen = "2 + 3 / "
-        calculator.ifLastTextisOperator()
+        calculator.lastTextisOperator()
         XCTAssert(calculator.textScreen == "2 + 3")
+    }
+    func testGivenOperationEndWithDivideZero_WhenStartOperation_ThenShowAnAlertWithError() {
+        calculator.textScreen = "48 / 0"
+        calculator.startOperation()
+        XCTAssert(calculator.textScreen == "Start a New Operation")
+    }
+    func testGivenOperationWithNegativeNumber_WhenWantToSubstractANegativeNumber_ThenAddTheNumber() {
+        calculator.textScreen = "-127 - -36"
+        calculator.startOperation()
+        XCTAssertTrue(calculator.textScreen == "-127 - -36 = - 91")
+        
     }
 }

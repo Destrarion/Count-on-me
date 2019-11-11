@@ -1,6 +1,6 @@
 //
 //  ViewController.swift
-//  SimpleCalc
+//  CountOnMe
 //
 //  Created by Vincent Saluzzo on 29/03/2019.
 //  Copyright © 2019 Vincent Saluzzo. All rights reserved.
@@ -9,12 +9,15 @@
 import UIKit
 
 class ViewController: UIViewController {
+    var calculator = Calculator()
+    // Outlets
     @IBOutlet weak var textView: UIView!
     @IBOutlet var numberButtons: [UIButton]!
     @IBOutlet weak var textLabel: UITextView!
     // View actions
     @IBAction func tappedNumberButton(_ sender: UIButton) {
-        calculator.addingNumber(sender: sender)
+        guard let numberText = sender.title(for: .normal) else {return}
+        calculator.addingNumber(number: numberText)
     }
     // Addition Button
     @IBAction func tappedAdditionButton(_ sender: UIButton) {
@@ -46,14 +49,13 @@ class ViewController: UIViewController {
         receivingNotification(name: "updateScreen")
         receivingNotification(name: "alertNotFinishingByNumber")
         receivingNotification(name: "alertNotEnoughtElement")
+        receivingNotification(name: "errorDivideByZero")
     }
-    var calculator = Calculator()
     private func receivingNotification(name: String) {
         let notificationName = Notification.Name(rawValue: name)
         let selector = Selector((name))
         NotificationCenter.default.addObserver(self, selector: selector, name: notificationName, object: nil)
     }
-
     @objc func updateScreen() {
         textLabel.text = calculator.textScreen
     }
@@ -70,5 +72,12 @@ class ViewController: UIViewController {
                                             preferredStyle: .alert)
             alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
             return self.present(alertVC, animated: true, completion: nil)
+    }
+    @objc func errorDivideByZero() {
+        let alertVC = UIAlertController(title: "Error: Cannot divide by zero !",
+                                        message: "Not possible to divide a number with zero. Start a new Operation.",
+                                        preferredStyle: .alert)
+        alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+        return self.present(alertVC, animated: true, completion: nil)
     }
 }

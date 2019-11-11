@@ -5,58 +5,81 @@
 //  Created by Fabien Dietrich on 04/09/2019.
 //  Copyright © 2019 Vincent Saluzzo. All rights reserved.
 //
-
-import UIKit
+import Foundation
 
 public class Calculator {
     var textScreen: String = ""
     var textResult: String = ""
     func addingAddition() {
-        ifExpressionAlreadyHaveResult(operatorSymbol: "+")
-        ifLastTextisOperator()
-        textScreen +=  " + "
-        sendNotification(name: "updateScreen")
+        if emptyScreen() {
+            return
+        } else if textScreen == "-" {
+            textScreen.removeLast()
+            sendNotification(name: "updateScreen")
+        } else {
+            addingOperationAfterResult(operatorSymbol: "+")
+            replaceLastOperator()
+            textScreen +=  " + "
+            sendNotification(name: "updateScreen")
+        }
     }
+    // this function gonna be factored later with switch case
     func addingSubstraction() {
-        ifExpressionAlreadyHaveResult(operatorSymbol: "-")
-        ifLastTextisOperator()
+        print(textScreen)
+        if emptyScreen() {
+            textScreen +=  "-"
+            sendNotification(name: "updateScreen")
+        } else if textScreen == "-"{
+            return
+        } else if symbolSubstractionAlreadyAdded() == true {
+            return
+        } else if lastTextisOperator() {
+            textScreen += "-"
+        } else {
+        addingOperationAfterResult(operatorSymbol: "-")
         textScreen +=  " - "
         sendNotification(name: "updateScreen")
+        }
     }
     func addingMultiplication() {
-        ifExpressionAlreadyHaveResult(operatorSymbol: "x")
-        ifLastTextisOperator()
+        if emptyScreen() {
+            return
+        }
+        addingOperationAfterResult(operatorSymbol: "x")
+        replaceLastOperator()
         textScreen +=  " x "
         sendNotification(name: "updateScreen")
     }
     func addingDivision() {
-        ifExpressionAlreadyHaveResult(operatorSymbol: "/")
-        ifLastTextisOperator()
+        if emptyScreen() {
+            return
+        }
+        addingOperationAfterResult(operatorSymbol: "/")
+        replaceLastOperator()
         textScreen +=  " / "
         sendNotification(name: "updateScreen")
     }
     func startOperation() {
+        print(textScreen)
         if expressionHaveResult == true {
             return
         }
         if expressionIsCorrect == true && expressionHaveEnoughElement {
             var operationsToReduce = elements
+            textScreen.append(" = ")
             print(operationsToReduce)
             // looking for multiplication and division
             for (count, index) in operationsToReduce.enumerated() {
                 if index.hasPrefix("x") || index.hasPrefix("/") {
-                    print("priorité opération")
                     operationsToReduce = reduceOperation(operationToReduce: operationsToReduce,
-                                                         index: count - valueRemoved)
-                    print("after checking priority multiplication : \(operationsToReduce)")
+                        index: count - valueRemoved)
                 }
-                //after operation priorities
             }
             while operationsToReduce.count > 1 {
             operationsToReduce = reduceOperation(operationToReduce: operationsToReduce, index: 0 - valueRemoved)
             }
             textResult = operationsToReduce.first!
-            let finalResult = " = \(operationsToReduce.first!)"
+            let finalResult = "\(operationsToReduce.first!)"
             textScreen.append(finalResult)
             print(textScreen)
             sendNotification(name: "updateScreen")
@@ -81,16 +104,22 @@ public class Calculator {
     var expressionHaveResult: Bool {
         return textScreen.firstIndex(of: "=") != nil
     }
+    var expressionHaveError: Bool {
+        if textScreen == "Start a new operation" {
+            return true
+        }
+        return false
+    }
     var expressionIsCorrect: Bool {
         return elements.last != "+" && elements.last != "-" && elements.last != "x" && elements.last != "/"
     }
-    private func sendNotification(name: String) {
+    func sendNotification(name: String) {
         let name = Notification.Name(rawValue: name)
         let notification = Notification(name: name)
         NotificationCenter.default.post(notification)
     }
     var valueRemoved = 0
-    func reduceOperation(operationToReduce: [String], index: Int) -> [String] {
+    private func reduceOperation(operationToReduce: [String], index: Int) -> [String] {
         print("parametre de reduceOperation, operationToReduce: \(operationToReduce), index : \(index)")
         var count = 1
         if index > 0 {
@@ -99,15 +128,22 @@ public class Calculator {
         let operand = operationToReduce[count]
         guard let left = Float(operationToReduce[count - 1]) else {return [operationToReduce[count - 1]]}
         guard let right = Float(operationToReduce[count + 1]) else {return [operationToReduce[count + 1]]}
-        var result: Float = calculateOperation(left: left, operand: operand, right: right)
-        result = roundingValue(value: result)
-        var operation = operationToReduce
-        operation[count - 1] = "\(result)"
-        operation.remove(at: count)
-        valueRemoved += 1
-        operation.remove(at: count)
-        valueRemoved += 1
-        return operation
+        var result: Float
+        if divideByZero(numberRight: right, operand: operand) {
+            sendNotification(name: "errorDivideByZero")
+            clear()
+            return ["Start a new operation"]
+        } else {
+            result = calculateOperation(left: left, operand: operand, right: right)
+            result = roundingValue(value: result)
+            var operation = operationToReduce
+            operation[count - 1] = "\(result)"
+            operation.remove(at: count)
+            valueRemoved += 1
+            operation.remove(at: count)
+            valueRemoved += 1
+            return operation
+        }
     }
     func calculateOperation(left: Float, operand: String, right: Float) -> Float {
         var result: Float
@@ -124,36 +160,92 @@ public class Calculator {
         let roundedValue = round ( value * 10000 ) / 10000
         return roundedValue
     }
-    func ifLastTextisOperator() {
+    func replaceLastOperator() {
+        if lastTextisOperator() == true {
+            if textScreen == "-"{
+                removeLastText(number: 1)
+            } else {
+            removeLastText(number: 3)
+            }
+        }
+    }
+    // Boolean if the last text is one of the operator symbol
+    func lastTextisOperator() -> Bool {
         let textOnScreen = elements
         if textOnScreen.last == "+" ||
             textOnScreen.last == "-" ||
             textOnScreen.last == "x" ||
             textOnScreen.last == "/" {
-            textScreen.removeLast()
-            textScreen.removeLast()
-            textScreen.removeLast()
+            return true
         }
+        return false
     }
-    func ifExpressionAlreadyHaveResult (operatorSymbol: String) {
+    // func called after making a result if the user want to continue with the result value
+    func addingOperationAfterResult (operatorSymbol: String) {
+        if expressionHaveError == true {
+            textScreen = ""
+        }
         if expressionHaveResult == true {
             valueRemoved = 0
             textScreen = "\(textResult) + \(operatorSymbol)"
         }
     }
+    // clear everything
     func clear () {
         textScreen = ""
         valueRemoved = 0
         sendNotification(name: "updateScreen")
     }
-    func addingNumber (sender: UIButton) {
-    guard let numberText = sender.title(for: .normal) else {return}
-        if expressionHaveResult {
+    // func called when adding number
+    func addingNumber (number: String) {
+        if expressionHaveResult || expressionHaveError {
             textScreen = ""
             textResult = ""
             sendNotification(name: "updateScreen")
         }
-        textScreen.append(numberText)
+        textScreen.append(number)
         sendNotification(name: "updateScreen")
+    }
+    // function to prevent error from divide by zero
+    func divideByZero (numberRight: Float, operand: String) -> Bool {
+        var rightIsZero = false
+        if operand == "/"{
+            if numberRight == 0 {
+                rightIsZero = true
+                return rightIsZero
+            }
+        }
+        return false
+    }
+    func emptyScreen() -> Bool {
+        if textScreen == ""{
+            return true
+        } else {
+            return false
+        }
+    }
+    // function to do not get 3 "-" in a row or "--"
+    func symbolSubstractionAlreadyAdded() -> Bool {
+        var countElement: Int = -1
+        let operation = elements
+        for _ in elements {
+            countElement += 1
+        }
+        let operatorList = ["+", "-", "x", "/"]
+        if expressionHaveEnoughElement {
+            for (_, operatorSymbol) in operatorList.enumerated() {
+                if operation[countElement - 1] == operatorSymbol && operation[countElement] == "-" {
+                    return true
+                }
+            }
+        }
+        return false
+    }
+    // func for factoring code when removing last
+    func removeLastText(number: Int) {
+        let numberToRemove = number
+        for _ in 1...numberToRemove {
+            textScreen.removeLast()
+        }
     }
 }
