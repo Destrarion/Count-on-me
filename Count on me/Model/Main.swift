@@ -8,14 +8,22 @@
 import Foundation
 
 public class Calculator {
+    // variable for the operation and what is showed to the screen
     var textScreen: String = ""
+    // variable in case we need to follow the operation
     var textResult: String = ""
+    // variable for the next operator
+    
+    //Variable is the number gonna be negative or not
+    
     func addingAddition() {
         if emptyScreen() {
             return
         } else if textScreen == "-" {
-            textScreen.removeLast()
+            removeLastText(number: 1)
             sendNotification(name: "updateScreen")
+        } else if textScreen == " - " {
+            removeLastText(number: 3)
         } else {
             addingOperationAfterResult(operatorSymbol: "+")
             replaceLastOperator()
@@ -35,8 +43,10 @@ public class Calculator {
             return
         } else if lastTextisOperator() {
             textScreen += "-"
-        } else {
+            sendNotification(name: "updateScreen")
+        } else if expressionHaveResult == true {
         addingOperationAfterResult(operatorSymbol: "-")
+        } else {
         textScreen +=  " - "
         sendNotification(name: "updateScreen")
         }
@@ -165,7 +175,7 @@ public class Calculator {
             if textScreen == "-"{
                 removeLastText(number: 1)
             } else {
-            removeLastText(number: 3)
+            removeLastText(number: 4)
             }
         }
     }
@@ -173,6 +183,7 @@ public class Calculator {
     func lastTextisOperator() -> Bool {
         let textOnScreen = elements
         if textOnScreen.last == "+" ||
+    // The error that concern the issue after result typing - number is here
             textOnScreen.last == "-" ||
             textOnScreen.last == "x" ||
             textOnScreen.last == "/" {
@@ -187,7 +198,8 @@ public class Calculator {
         }
         if expressionHaveResult == true {
             valueRemoved = 0
-            textScreen = "\(textResult) + \(operatorSymbol)"
+            textScreen = "\(textResult) \(operatorSymbol) "
+            sendNotification(name: "updateScreen")
         }
     }
     // clear everything

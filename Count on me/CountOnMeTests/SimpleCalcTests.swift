@@ -63,6 +63,5 @@ class SimpleCalcTests: XCTestCase {
         calculator.textScreen = "-127 - -36"
         calculator.startOperation()
         XCTAssertTrue(calculator.textScreen == "-127 - -36 = - 91")
-        
     }
 }
