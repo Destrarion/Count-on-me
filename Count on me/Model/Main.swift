@@ -13,13 +13,11 @@ public class Calculator {
     // variable in case we need to follow the operation
     var textResult: String = ""
     // variable for the next operator
-    
     //Variable is the number gonna be negative or not
-    
     func addingAddition() {
         if emptyScreen() {
             return
-        } else if textScreen == "-" {
+        } else if symbolSubstractionAlreadyAdded() {
             removeLastText(number: 1)
             sendNotification(name: "updateScreen")
         } else if textScreen == " - " {
@@ -36,20 +34,19 @@ public class Calculator {
         print(textScreen)
         if emptyScreen() {
             textScreen +=  "-"
-            sendNotification(name: "updateScreen")
         } else if textScreen == "-"{
             return
         } else if symbolSubstractionAlreadyAdded() == true {
-            return
-        } else if lastTextisOperator() {
+            removeLastText(number: 3)
+            textScreen += "- -"
+        } else if lastTextIsOperator() {
             textScreen += "-"
-            sendNotification(name: "updateScreen")
         } else if expressionHaveResult == true {
         addingOperationAfterResult(operatorSymbol: "-")
         } else {
         textScreen +=  " - "
-        sendNotification(name: "updateScreen")
         }
+    sendNotification(name: "updateScreen")
     }
     func addingMultiplication() {
         if emptyScreen() {
@@ -166,21 +163,22 @@ public class Calculator {
         }
         return result
     }
-    func roundingValue(value: Float) -> Float {
-        let roundedValue = round ( value * 10000 ) / 10000
+    private func roundingValue(value: Float) -> Float {
+        let roundedValue = round(value * 10000 ) / 10000
         return roundedValue
     }
     func replaceLastOperator() {
-        if lastTextisOperator() == true {
+        if lastTextIsOperator() == true {
             if textScreen == "-"{
                 removeLastText(number: 1)
             } else {
-            removeLastText(number: 4)
+            // 12 + (click on + button ) 1 + (see lastTextIsOperator
+            removeLastText(number: 3)
             }
         }
     }
     // Boolean if the last text is one of the operator symbol
-    func lastTextisOperator() -> Bool {
+    func lastTextIsOperator() -> Bool {
         let textOnScreen = elements
         if textOnScreen.last == "+" ||
     // The error that concern the issue after result typing - number is here

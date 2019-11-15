@@ -51,7 +51,7 @@ class SimpleCalcTests: XCTestCase {
     }
     func testGivenTextScreenNormalOperation_WhenIfLastTextIsOperator_ThenXCTAssertFalse() {
         calculator.textScreen = "2 + 3 / "
-        calculator.lastTextisOperator()
+        calculator.lastTextIsOperator()
         XCTAssert(calculator.textScreen == "2 + 3")
     }
     func testGivenOperationEndWithDivideZero_WhenStartOperation_ThenShowAnAlertWithError() {
