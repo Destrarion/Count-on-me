@@ -15,7 +15,7 @@ public class Calculator {
     // variable for the next operator
     //Variable is the number gonna be negative or not
     func addingAddition() {
-        if emptyScreen() {
+        if emptyScreen() || textScreen == "Start a new operation" {
             return
         } else if symbolSubstractionAlreadyAdded() {
             removeLastText(number: 1)
@@ -31,9 +31,8 @@ public class Calculator {
     }
     // this function gonna be factored later with switch case
     func addingSubstraction() {
-        print(textScreen)
-        if emptyScreen() {
-            textScreen +=  "-"
+        if emptyScreen() || textScreen == "Start a new operation" {
+            return
         } else if textScreen == "-"{
             return
         } else if symbolSubstractionAlreadyAdded() == true {
@@ -49,7 +48,7 @@ public class Calculator {
     sendNotification(name: "updateScreen")
     }
     func addingMultiplication() {
-        if emptyScreen() {
+        if emptyScreen() || textScreen == "Start a new operation" {
             return
         }
         addingOperationAfterResult(operatorSymbol: "x")
@@ -58,7 +57,7 @@ public class Calculator {
         sendNotification(name: "updateScreen")
     }
     func addingDivision() {
-        if emptyScreen() {
+        if emptyScreen() || textScreen == "Start a new operation" {
             return
         }
         addingOperationAfterResult(operatorSymbol: "/")
@@ -193,6 +192,9 @@ public class Calculator {
     func addingOperationAfterResult (operatorSymbol: String) {
         if expressionHaveError == true {
             textScreen = ""
+        }
+        if textScreen == "Start a new operation" {
+            return
         }
         if expressionHaveResult == true {
             valueRemoved = 0
