@@ -35,6 +35,9 @@ class ViewController: UIViewController {
     @IBAction func tappedDivisionButton(_ sender: UIButton) {
         calculator.addingDivision()
     }
+    @IBAction func tappedDotButton(_ sender: UIButton) {
+        calculator.addDot()
+    }
     @IBAction func acButton(_ sender: UIButton) {
         calculator.clear()
     }

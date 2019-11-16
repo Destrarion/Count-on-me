@@ -65,6 +65,14 @@ public class Calculator {
         textScreen +=  " / "
         sendNotification(name: "updateScreen")
     }
+    func addDot() {
+        if emptyScreen() || textScreen == "Start a new operation" {
+            textScreen = "0."
+        } else {
+            textScreen += "."
+        }
+        sendNotification(name: "updateScreen")
+    }
     func startOperation() {
         print(textScreen)
         if expressionHaveResult == true {
