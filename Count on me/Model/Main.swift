@@ -11,7 +11,7 @@ public class Calculator {
     // variable for the operation and what is showed to the screen
     var textScreen: String = ""
     // variable in case we need to follow the operation
-    var textResult: String = ""
+    private var textResult: String = ""
     // variable for the next operator
     //Variable is the number gonna be negative or not
     func addingAddition() {
@@ -108,31 +108,31 @@ public class Calculator {
             }
         }
     }
-    var elements: [String] {
+    private var elements: [String] {
         return textScreen.split(separator: " ").map { "\($0)" }
     }
     // Error check computed variables
     var expressionHaveEnoughElement: Bool {
         return elements.count >= 3
     }
-    var expressionHaveResult: Bool {
+    private var expressionHaveResult: Bool {
         return textScreen.firstIndex(of: "=") != nil
     }
-    var expressionHaveError: Bool {
+    private var expressionHaveError: Bool {
         if textScreen == "Start a new operation" {
             return true
         }
         return false
     }
-    var expressionIsCorrect: Bool {
+    private var expressionIsCorrect: Bool {
         return elements.last != "+" && elements.last != "-" && elements.last != "x" && elements.last != "/"
     }
-    func sendNotification(name: String) {
+    private func sendNotification(name: String) {
         let name = Notification.Name(rawValue: name)
         let notification = Notification(name: name)
         NotificationCenter.default.post(notification)
     }
-    var valueRemoved = 0
+    private var valueRemoved = 0
     private func reduceOperation(operationToReduce: [String], index: Int) -> [String] {
         print("parametre de reduceOperation, operationToReduce: \(operationToReduce), index : \(index)")
         var count = 1
@@ -159,7 +159,7 @@ public class Calculator {
             return operation
         }
     }
-    func calculateOperation(left: Float, operand: String, right: Float) -> Float {
+    private func calculateOperation(left: Float, operand: String, right: Float) -> Float {
         var result: Float
         switch operand {
         case "x": result = left * right
@@ -174,7 +174,7 @@ public class Calculator {
         let roundedValue = round(value * 10000 ) / 10000
         return roundedValue
     }
-    func replaceLastOperator() {
+    private func replaceLastOperator() {
         if lastTextIsOperator() == true {
             if textScreen == "-"{
                 removeLastText(number: 1)
@@ -185,7 +185,7 @@ public class Calculator {
         }
     }
     // Boolean if the last text is one of the operator symbol
-    func lastTextIsOperator() -> Bool {
+    private func lastTextIsOperator() -> Bool {
         let textOnScreen = elements
         if textOnScreen.last == "+" ||
     // The error that concern the issue after result typing - number is here
@@ -197,7 +197,7 @@ public class Calculator {
         return false
     }
     // func called after making a result if the user want to continue with the result value
-    func addingOperationAfterResult (operatorSymbol: String) {
+    private func addingOperationAfterResult (operatorSymbol: String) {
         if expressionHaveError == true {
             textScreen = ""
         }
@@ -227,7 +227,7 @@ public class Calculator {
         sendNotification(name: "updateScreen")
     }
     // function to prevent error from divide by zero
-    func divideByZero (numberRight: Float, operand: String) -> Bool {
+    private func divideByZero (numberRight: Float, operand: String) -> Bool {
         var rightIsZero = false
         if operand == "/"{
             if numberRight == 0 {
@@ -237,7 +237,7 @@ public class Calculator {
         }
         return false
     }
-    func emptyScreen() -> Bool {
+    private func emptyScreen() -> Bool {
         if textScreen == ""{
             return true
         } else {
@@ -245,7 +245,7 @@ public class Calculator {
         }
     }
     // function to do not get 3 "-" in a row or "--"
-    func symbolSubstractionAlreadyAdded() -> Bool {
+    private func symbolSubstractionAlreadyAdded() -> Bool {
         var countElement: Int = -1
         let operation = elements
         for _ in elements {
@@ -262,7 +262,7 @@ public class Calculator {
         return false
     }
     // func for factoring code when removing last
-    func removeLastText(number: Int) {
+    private func removeLastText(number: Int) {
         let numberToRemove = number
         for _ in 1...numberToRemove {
             textScreen.removeLast()
