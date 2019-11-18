@@ -66,7 +66,7 @@ public class Calculator {
         sendNotification(name: "updateScreen")
     }
     func addDot() {
-        if lastTextIsDot(){
+        if lastTextIsDot() {
             return
         }
         if emptyScreen() || textScreen == "Start a new operation" || lastTextIsOperator() {
@@ -256,7 +256,7 @@ public class Calculator {
         }
         let operatorList = ["+", "-", "x", "/"]
         if expressionHaveEnoughElement {
-            for (_, operatorSymbol) in operatorList.enumerated() {
+            for operatorSymbol in operatorList {
                 if operation[countElement - 1] == operatorSymbol && operation[countElement] == "-" {
                     return true
                 }
@@ -275,7 +275,7 @@ public class Calculator {
         let operation = elements
         if (operation.last?.hasSuffix("."))! {
             return true
-        }else{
+        } else {
             return false
         }
     }
