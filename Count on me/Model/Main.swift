@@ -66,7 +66,10 @@ public class Calculator {
         sendNotification(name: "updateScreen")
     }
     func addDot() {
-        if emptyScreen() || textScreen == "Start a new operation" {
+        if lastTextIsDot(){
+            return
+        }
+        if emptyScreen() || textScreen == "Start a new operation" || lastTextIsOperator() {
             textScreen = "0."
         } else {
             textScreen += "."
@@ -266,6 +269,14 @@ public class Calculator {
         let numberToRemove = number
         for _ in 1...numberToRemove {
             textScreen.removeLast()
+        }
+    }
+    func lastTextIsDot () -> Bool {
+        let operation = elements
+        if (operation.last?.hasSuffix("."))! {
+            return true
+        }else{
+            return false
         }
     }
 }
