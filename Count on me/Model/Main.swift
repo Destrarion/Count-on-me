@@ -12,8 +12,7 @@ public class Calculator {
     var textScreen: String = ""
     // variable in case we need to follow the operation
     private var textResult: String = ""
-    // variable for the next operator
-    //Variable is the number gonna be negative or not
+    // function to add an addition or removing the negative number symbol
     func addingAddition() {
         if emptyScreen() || textScreen == "Start a new operation" {
             return
@@ -29,7 +28,7 @@ public class Calculator {
             sendNotification(name: "updateScreen")
         }
     }
-    // this function gonna be factored later with switch case
+    // function to add substraction and the negative number to the operation
     func addingSubstraction() {
         if emptyScreen() || textScreen == "Start a new operation" {
             return
@@ -47,6 +46,7 @@ public class Calculator {
         }
     sendNotification(name: "updateScreen")
     }
+    // function for adding multiplication
     func addingMultiplication() {
         if emptyScreen() || textScreen == "Start a new operation" {
             return
@@ -56,6 +56,7 @@ public class Calculator {
         textScreen +=  " x "
         sendNotification(name: "updateScreen")
     }
+    // function for adding division
     func addingDivision() {
         if emptyScreen() || textScreen == "Start a new operation" {
             return
@@ -65,6 +66,7 @@ public class Calculator {
         textScreen +=  " / "
         sendNotification(name: "updateScreen")
     }
+    // function to add dot to a number
     func addDot() {
         if lastTextIsDot() {
             return
@@ -76,8 +78,16 @@ public class Calculator {
         }
         sendNotification(name: "updateScreen")
     }
+    /* Method called when pressing the Equal Button
+        
+        It check first the priority of operation and reduceOperation multiplication and division first.
+     
+        then in a second time he reduce the operation for addition and susbtraction.
+     
+        It check also if the operation is correct, if the operation isn't well written, it gonna send notification to alert the user with an alert.
+ 
+    */
     func startOperation() {
-        print(textScreen)
         if expressionHaveResult == true {
             return
         }
@@ -111,6 +121,7 @@ public class Calculator {
             }
         }
     }
+    // Variable that split the string variable operation to an array.
     private var elements: [String] {
         return textScreen.split(separator: " ").map { "\($0)" }
     }
@@ -118,24 +129,30 @@ public class Calculator {
     var expressionHaveEnoughElement: Bool {
         return elements.count >= 3
     }
+    // Boolean used to check if there's a result already done.
     private var expressionHaveResult: Bool {
         return textScreen.firstIndex(of: "=") != nil
     }
+    // Boolean to check when if the last operation was an error.
     private var expressionHaveError: Bool {
         if textScreen == "Start a new operation" {
             return true
         }
         return false
     }
+    // Method that check if the expression do not finish by an operand
     private var expressionIsCorrect: Bool {
         return elements.last != "+" && elements.last != "-" && elements.last != "x" && elements.last != "/"
     }
+    // Method created to simplify sending a notification
     private func sendNotification(name: String) {
         let name = Notification.Name(rawValue: name)
         let notification = Notification(name: name)
         NotificationCenter.default.post(notification)
     }
+    // Variable used to count how much value as been rethrieved to prevent an out of range when reducing operation.
     private var valueRemoved = 0
+    // Method that gonna place the number to their emplacement to calculate the operation.
     private func reduceOperation(operationToReduce: [String], index: Int) -> [String] {
         print("parametre de reduceOperation, operationToReduce: \(operationToReduce), index : \(index)")
         var count = 1
@@ -162,6 +179,13 @@ public class Calculator {
             return operation
         }
     }
+    /// Returns the operation of 3 elements
+    /// from the given components.
+    ///
+    /// - Parameters:
+    ///     - left: The number located to the left of the operand
+    ///     - operand: To define which operation we must use ( + , - ,  x ,  /  )
+    ///     - right: The number located to the right of the operand
     private func calculateOperation(left: Float, operand: String, right: Float) -> Float {
         var result: Float
         switch operand {
@@ -173,10 +197,12 @@ public class Calculator {
         }
         return result
     }
+    // Method called for rounding the result.
     private func roundingValue(value: Float) -> Float {
         let roundedValue = round(value * 10000 ) / 10000
         return roundedValue
     }
+    // Method called for replacing the last operator
     private func replaceLastOperator() {
         if lastTextIsOperator() == true {
             if textScreen == "-"{
@@ -271,7 +297,8 @@ public class Calculator {
             textScreen.removeLast()
         }
     }
-    func lastTextIsDot () -> Bool {
+    // Boolean used to check if the last number contain a dot.
+    private func lastTextIsDot () -> Bool {
         let operation = elements
         if (operation.last?.hasSuffix("."))! {
             return true
@@ -280,3 +307,5 @@ public class Calculator {
         }
     }
 }
+
+

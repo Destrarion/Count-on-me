@@ -54,14 +54,17 @@ class ViewController: UIViewController {
         receivingNotification(name: "alertNotEnoughtElement")
         receivingNotification(name: "errorDivideByZero")
     }
+    // function for receiving notification
     private func receivingNotification(name: String) {
         let notificationName = Notification.Name(rawValue: name)
         let selector = Selector((name))
         NotificationCenter.default.addObserver(self, selector: selector, name: notificationName, object: nil)
     }
+    // function that update the Screen
     @objc func updateScreen() {
         textLabel.text = calculator.textScreen
     }
+    // Alert when there's not enought element for making a operation
     @objc func alertNotEnoughtElement () {
         guard calculator.expressionHaveEnoughElement else {
             let alertVC = UIAlertController(title: "Error!", message: "Start a new calcul !", preferredStyle: .alert)
@@ -69,6 +72,7 @@ class ViewController: UIViewController {
             return self.present(alertVC, animated: true, completion: nil)
         }
     }
+    // Alert when the operation does not finish by number
     @objc func alertNotFinishingByNumber() {
             let alertVC = UIAlertController(title: "Error!",
                                             message: "Enter a correct expression!",
@@ -76,6 +80,7 @@ class ViewController: UIViewController {
             alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
             return self.present(alertVC, animated: true, completion: nil)
     }
+    // Alert when the user try to divide a number by zero 
     @objc func errorDivideByZero() {
         let alertVC = UIAlertController(title: "Error: Cannot divide by zero !",
                                         message: "Not possible to divide a number with zero. Start a new Operation.",
@@ -84,3 +89,4 @@ class ViewController: UIViewController {
         return self.present(alertVC, animated: true, completion: nil)
     }
 }
+
