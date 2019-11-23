@@ -80,7 +80,7 @@ class ViewController: UIViewController {
             alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
             return self.present(alertVC, animated: true, completion: nil)
     }
-    // Alert when the user try to divide a number by zero 
+    // Alert when the user try to divide a number by zero
     @objc func errorDivideByZero() {
         let alertVC = UIAlertController(title: "Error: Cannot divide by zero !",
                                         message: "Not possible to divide a number with zero. Start a new Operation.",
@@ -89,4 +89,3 @@ class ViewController: UIViewController {
         return self.present(alertVC, animated: true, completion: nil)
     }
 }
-

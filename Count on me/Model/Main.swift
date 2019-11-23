@@ -14,7 +14,7 @@ public class Calculator {
     private var textResult: String = ""
     // function to add an addition or removing the negative number symbol
     func addingAddition() {
-        if emptyScreen() || textScreen == "Start a new operation" {
+        if emptyScreen() || expressionHaveError{
             return
         } else if symbolSubstractionAlreadyAdded() {
             removeLastText(number: 1)
@@ -30,7 +30,7 @@ public class Calculator {
     }
     // function to add substraction and the negative number to the operation
     func addingSubstraction() {
-        if emptyScreen() || textScreen == "Start a new operation" {
+        if emptyScreen() || expressionHaveError {
             return
         } else if textScreen == "-"{
             return
@@ -48,8 +48,11 @@ public class Calculator {
     }
     // function for adding multiplication
     func addingMultiplication() {
-        if emptyScreen() || textScreen == "Start a new operation" {
+        if emptyScreen() || expressionHaveError {
             return
+        } else if symbolSubstractionAlreadyAdded() {
+            removeLastText(number: 4)
+            sendNotification(name: "updateScreen")
         }
         addingOperationAfterResult(operatorSymbol: "x")
         replaceLastOperator()
@@ -58,8 +61,11 @@ public class Calculator {
     }
     // function for adding division
     func addingDivision() {
-        if emptyScreen() || textScreen == "Start a new operation" {
+        if emptyScreen() || expressionHaveError {
             return
+        } else if symbolSubstractionAlreadyAdded() {
+            removeLastText(number: 4)
+            sendNotification(name: "updateScreen")
         }
         addingOperationAfterResult(operatorSymbol: "/")
         replaceLastOperator()
@@ -71,8 +77,10 @@ public class Calculator {
         if lastTextIsDot() {
             return
         }
-        if emptyScreen() || textScreen == "Start a new operation" || lastTextIsOperator() {
+        if emptyScreen() || expressionHaveError {
             textScreen = "0."
+        } else if lastTextIsOperator() {
+            textScreen.append("0.")
         } else {
             textScreen += "."
         }
@@ -82,9 +90,11 @@ public class Calculator {
         
         It check first the priority of operation and reduceOperation multiplication and division first.
      
-        then in a second time he reduce the operation for addition and susbtraction.
+        Then in a second time he reduce the operation for addition and susbtraction.
      
-        It check also if the operation is correct, if the operation isn't well written, it gonna send notification to alert the user with an alert.
+        It check also if the operation is correct.
+     
+        If the operation isn't well written, it gonna send notification to alert the user with an alert.
  
     */
     func startOperation() {
@@ -300,12 +310,11 @@ public class Calculator {
     // Boolean used to check if the last number contain a dot.
     private func lastTextIsDot () -> Bool {
         let operation = elements
-        if (operation.last?.hasSuffix("."))! {
-            return true
-        } else {
-            return false
+        if textScreen != ""{
+            if (operation.last?.hasSuffix("."))! {
+                return true
+            }
         }
+        return false
     }
 }
-
-
