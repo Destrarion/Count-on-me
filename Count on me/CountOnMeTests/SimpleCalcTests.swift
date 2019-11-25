@@ -47,7 +47,7 @@ class SimpleCalcTests: XCTestCase {
         calculator.startOperation()
         XCTAssert(calculator.textScreen == "550 + 39 / 36.751 = 551.0612")
     }
-    func testGivenEmptyScreen_WhenAddingNumberAndAttemptingAddingTwoDotsOnSameNumber_ThenDontAllowIt(){
+    func testGivenEmptyScreen_WhenAddingNumberAndAttemptingAddingTwoDotsOnSameNumber_ThenDontAllowIt() {
         calculator.addingNumber(number: "221")
         calculator.addDot()
         calculator.addingNumber(number: "25")
@@ -57,5 +57,12 @@ class SimpleCalcTests: XCTestCase {
         calculator.addingNumber(number: "3")
         calculator.startOperation()
         XCTAssert(calculator.textScreen == "221.252 + 3 = 224.252")
+    }
+    func testGivenErrorStartANewOperation_WhenAddingMultiplicationAndClearAndAddMultiplication_ThenEmptyScreen() {
+        calculator.textScreen = "Start a new operation"
+        calculator.addingMultiplication()
+        calculator.clear()
+        calculator.addingMultiplication()
+        XCTAssert(calculator.textScreen == "")
     }
 }
