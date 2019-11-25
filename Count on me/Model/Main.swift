@@ -8,13 +8,11 @@
 import Foundation
 
 public class Calculator {
-    // variable for the operation and what is showed to the screen
     var textScreen: String = ""
-    // variable in case we need to follow the operation
     private var textResult: String = ""
     // function to add an addition or removing the negative number symbol
     func addingAddition() {
-        if emptyScreen() || expressionHaveError{
+        if emptyScreen() || expressionHaveError {
             return
         } else if symbolSubstractionAlreadyAdded() {
             removeLastText(number: 1)
@@ -74,7 +72,7 @@ public class Calculator {
     }
     // function to add dot to a number
     func addDot() {
-        if lastTextIsDot() {
+        if lastTextIsDot() || dotAlreadyAddedToLastNumber() {
             return
         }
         if emptyScreen() || expressionHaveError {
@@ -103,6 +101,7 @@ public class Calculator {
         }
         if expressionIsCorrect == true && expressionHaveEnoughElement {
             var operationsToReduce = elements
+            print(operationsToReduce)
             textScreen.append(" = ")
             print(operationsToReduce)
             // looking for multiplication and division
@@ -314,6 +313,13 @@ public class Calculator {
             if (operation.last?.hasSuffix("."))! {
                 return true
             }
+        }
+        return false
+    }
+    private func dotAlreadyAddedToLastNumber() -> Bool {
+        let operation = elements
+        if (operation.last?.contains("."))! {
+            return true
         }
         return false
     }
