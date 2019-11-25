@@ -17,6 +17,7 @@ class SimpleCalcTests: XCTestCase {
         calculator.addingMultiplication()
         calculator.addingSubstraction()
         calculator.addDot()
+        calculator.addDot()
         calculator.addingNumber(number: "1")
         calculator.startOperation()
         XCTAssert(calculator.textScreen == "2 x -0.1 = -0.2")
@@ -28,7 +29,7 @@ class SimpleCalcTests: XCTestCase {
         waitForExpectations(timeout: 0.1, handler: nil)
     }
     func testGivenCalculDividedByZero_WhenStartOperation_ThenAlertUIError() {
-        expectation(forNotification: NSNotification.Name(rawValue: "updateScreen"), object: nil, handler: nil)
+        expectation(forNotification: NSNotification.Name(rawValue: "errorDivideByZero"), object: nil, handler: nil)
         calculator.addDot()
         calculator.addingDivision()
         calculator.addingNumber(number: "0")
@@ -58,11 +59,39 @@ class SimpleCalcTests: XCTestCase {
         calculator.startOperation()
         XCTAssert(calculator.textScreen == "221.252 + 3 = 224.252")
     }
-    func testGivenErrorStartANewOperation_WhenAddingMultiplicationAndClearAndAddMultiplication_ThenEmptyScreen() {
+    func testGivenErrorStartANewOperation_WhenAddingOperatorAndClearAndAddOperator_ThenEmptyScreen() {
         calculator.textScreen = "Start a new operation"
         calculator.addingMultiplication()
+        calculator.addingAddition()
+        calculator.addingDivision()
         calculator.clear()
         calculator.addingMultiplication()
+        calculator.addingAddition()
+        calculator.addingDivision()
         XCTAssert(calculator.textScreen == "")
+    }
+    func testGivenStartedWrittenOperation_WhenWantToAddMoreOrRethriewSubstraction_ThenAddOrRemoveSubstraction() {
+        calculator.addingSubstraction()
+        calculator.addingSubstraction()
+        calculator.addingNumber(number: "6")
+        calculator.addingSubstraction()
+        calculator.addingSubstraction()
+        calculator.addingSubstraction()
+        calculator.addingAddition()
+        calculator.addingAddition()
+        calculator.addingNumber(number: "2")
+        calculator.startOperation()
+        XCTAssert(calculator.textScreen == "-6 + 2 = -4.0")
+    }
+    func testGivenEmptyScreen_WhenStartOperation_ThenNothingHappen() {
+        calculator.startOperation()
+        XCTAssert(calculator.textScreen == "")
+    }
+    func testGivenOperationImcomplete_WhenStartOperation_ThenAlertUINotFinishingByNumber() {
+        expectation(forNotification: NSNotification.Name(rawValue: "alertNotFinishingByNumber"),
+                    object: nil, handler: nil)
+        calculator.textScreen = "2 x"
+        calculator.startOperation()
+        waitForExpectations(timeout: 0.1, handler: nil)
     }
 }

@@ -17,8 +17,6 @@ public class Calculator {
         } else if symbolSubstractionAlreadyAdded() {
             removeLastText(number: 1)
             sendNotification(name: "updateScreen")
-        } else if textScreen == " - " {
-            removeLastText(number: 3)
         } else {
             addingOperationAfterResult(operatorSymbol: "+")
             replaceLastOperator()
@@ -29,7 +27,8 @@ public class Calculator {
     // function to add substraction and the negative number to the operation
     func addingSubstraction() {
         if emptyScreen() || expressionHaveError {
-            return
+            clear()
+            textScreen += "-"
         } else if textScreen == "-"{
             return
         } else if symbolSubstractionAlreadyAdded() == true {
@@ -44,7 +43,6 @@ public class Calculator {
         }
     sendNotification(name: "updateScreen")
     }
-    // function for adding multiplication
     func addingMultiplication() {
         if emptyScreen() || expressionHaveError {
             return
@@ -318,8 +316,10 @@ public class Calculator {
     }
     private func dotAlreadyAddedToLastNumber() -> Bool {
         let operation = elements
-        if (operation.last?.contains("."))! {
-            return true
+        if textScreen != ""{
+            if (operation.last?.contains("."))! {
+                return true
+            }
         }
         return false
     }
