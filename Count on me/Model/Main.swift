@@ -37,7 +37,7 @@ public class Calculator {
         case "+":
             if emptyScreen() || expressionHaveError {
                     return
-                } else if symbolSubstractionAlreadyAdded() {
+                } else if negativeSymbolAlreadyAdded() {
                     removeLastText(number: 1)
                     sendNotification(name: "updateScreen")
                 } else {
@@ -52,7 +52,7 @@ public class Calculator {
                     textScreen += "-"
                 } else if textScreen == "-"{
                     return
-                } else if symbolSubstractionAlreadyAdded() == true {
+                } else if negativeSymbolAlreadyAdded() == true {
                     removeLastText(number: 3)
                     textScreen += "- -"
                 } else if lastTextIsOperator() {
@@ -65,7 +65,7 @@ public class Calculator {
         default:
             if emptyScreen() || expressionHaveError {
                     return
-                } else if symbolSubstractionAlreadyAdded() {
+                } else if negativeSymbolAlreadyAdded() {
                     removeLastText(number: 4)
                     sendNotification(name: "updateScreen")
                 }
@@ -268,7 +268,7 @@ public class Calculator {
         }
     }
     /// function to do not get 3 "-" in a row or "--"
-    private func symbolSubstractionAlreadyAdded() -> Bool {
+    private func negativeSymbolAlreadyAdded() -> Bool {
         var countElement: Int = -1
         let operation = elements
         for _ in elements {
