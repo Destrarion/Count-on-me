@@ -21,19 +21,19 @@ class ViewController: UIViewController {
     }
     // Addition Button
     @IBAction func tappedAdditionButton(_ sender: UIButton) {
-        calculator.addingAddition()
+        calculator.add(operator: "+")
     }
     // Substract Button
     @IBAction func tappedSubstractionButton(_ sender: UIButton) {
-        calculator.addingSubstraction()
+        calculator.add(operator: "-")
     }
     // Multiplication Button
     @IBAction func tappedMultiplicationButton(_ sender: UIButton) {
-        calculator.addingMultiplication()
+        calculator.add(operator: "x")
     }
     // Division button
     @IBAction func tappedDivisionButton(_ sender: UIButton) {
-        calculator.addingDivision()
+        calculator.add(operator: "/")
     }
     @IBAction func tappedDotButton(_ sender: UIButton) {
         calculator.addDot()
