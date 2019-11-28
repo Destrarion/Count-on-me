@@ -220,11 +220,10 @@ public class Calculator {
     }
     /// Boolean if the last text is one of the operator symbol
     private func lastTextIsOperator() -> Bool {
-        let textOnScreen = elements
-        if textOnScreen.last == "+" ||
-            textOnScreen.last == "-" ||
-            textOnScreen.last == "x" ||
-            textOnScreen.last == "/" {
+        if elements.last == "+" ||
+            elements.last == "-" ||
+            elements.last == "x" ||
+            elements.last == "/" {
             return true
         }
         return false
@@ -270,14 +269,13 @@ public class Calculator {
     /// function to do not get 3 "-" in a row or "--"
     private func negativeSymbolAlreadyAdded() -> Bool {
         var countElement: Int = -1
-        let operation = elements
         for _ in elements {
             countElement += 1
         }
         let operatorList = ["+", "-", "x", "/"]
         if expressionHaveEnoughElement {
             for operatorSymbol in operatorList {
-                if operation[countElement - 1] == operatorSymbol && operation[countElement] == "-" {
+                if elements[countElement - 1] == operatorSymbol && elements[countElement] == "-" {
                     return true
                 }
             }
@@ -293,18 +291,16 @@ public class Calculator {
     }
     /// Boolean used to check if the last number contain a dot.
     private func lastTextIsDot () -> Bool {
-        let operation = elements
         if textScreen != ""{
-            if (operation.last?.hasSuffix("."))! {
+            if (elements.last?.hasSuffix("."))! {
                 return true
             }
         }
         return false
     }
     private func dotAlreadyAddedToLastNumber() -> Bool {
-        let operation = elements
         if textScreen != ""{
-            if (operation.last?.contains("."))! {
+            if (elements.last?.contains("."))! {
                 return true
             }
         }
