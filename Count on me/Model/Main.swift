@@ -11,7 +11,7 @@ public class Calculator {
     var textScreen: String = ""
     private var textResult: String = ""
     // func called when adding number
-    func addingNumber (number: String) {
+    func add(number: String) {
         if expressionHaveResult || expressionHaveError {
             textScreen = ""
             textResult = ""
@@ -39,13 +39,13 @@ public class Calculator {
                     return
                 } else if negativeSymbolAlreadyAdded() {
                     removeLastText(number: 1)
-                    sendNotification(name: "updateScreen")
+                } else if lastTextIsOperator() {
+                    replaceLastOperator()
                 } else {
                     addingOperationAfterResult(operatorSymbol: "+")
-                    replaceLastOperator()
                     textScreen +=  " + "
-                    sendNotification(name: "updateScreen")
                 }
+            sendNotification(name: "updateScreen")
         case "-":
             if emptyScreen() || expressionHaveError {
                     clear()
@@ -213,7 +213,7 @@ public class Calculator {
             if textScreen == "-"{
                 removeLastText(number: 1)
             } else {
-            // 12" + "1
+            // 12" + "1 , removeLastText count the + and space
             removeLastText(number: 3)
             }
         }
@@ -262,9 +262,8 @@ public class Calculator {
     private func emptyScreen() -> Bool {
         if textScreen == ""{
             return true
-        } else {
-            return false
         }
+        return false
     }
     /// function to do not get 3 "-" in a row or "--"
     private func negativeSymbolAlreadyAdded() -> Bool {

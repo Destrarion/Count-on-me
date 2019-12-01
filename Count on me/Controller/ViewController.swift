@@ -17,7 +17,7 @@ class ViewController: UIViewController {
     // View actions
     @IBAction func tappedNumberButton(_ sender: UIButton) {
         guard let numberText = sender.title(for: .normal) else {return}
-        calculator.addingNumber(number: numberText)
+        calculator.add(number: numberText)
     }
     // Addition Button
     @IBAction func tappedAdditionButton(_ sender: UIButton) {
