@@ -123,7 +123,7 @@ class SimpleCalcTests: XCTestCase {
         calculator.add(operator: "+")
         XCTAssert(calculator.textScreen == "2 + ")
     }
-    func testGivenOperationWithLastOperator_WhenAddByMultiplicationOperator_ThenReplaceLastOperatorByMultiplcationOperator() {
+    func testGivenOperationWithLastOperator_WhenAddByMultiplicationOperator_ThenReplaceLastOperatorByMultiplcation() {
         calculator.textScreen = "2 + "
         calculator.add(operator: "x")
         XCTAssert(calculator.textScreen == "2 x ")
