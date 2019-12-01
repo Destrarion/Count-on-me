@@ -40,7 +40,7 @@ public class Calculator {
                 } else if negativeSymbolAlreadyAdded() {
                     removeLastText(number: 1)
                 } else if lastTextIsOperator() {
-                    replaceLastOperator()
+                    replaceLastOperator(" + ")
                 } else {
                     addingOperationAfterResult(operatorSymbol: "+")
                     textScreen +=  " + "
@@ -67,11 +67,13 @@ public class Calculator {
                     return
                 } else if negativeSymbolAlreadyAdded() {
                     removeLastText(number: 4)
-                    sendNotification(name: "updateScreen")
-                }
+                    textScreen += " \(symbol) "
+                } else if lastTextIsOperator() {
+                    replaceLastOperator(" \(symbol) ")
+                } else {
                 addingOperationAfterResult(operatorSymbol: symbol)
-                replaceLastOperator()
                 textScreen +=  " \(symbol) "
+                }
             }
         sendNotification(name: "updateScreen")
     }
@@ -208,13 +210,14 @@ public class Calculator {
         return roundedValue
     }
     /// Method called for replacing the last operator
-    private func replaceLastOperator() {
+    private func replaceLastOperator(_ symbol: String) {
         if lastTextIsOperator() == true {
             if textScreen == "-"{
                 removeLastText(number: 1)
             } else {
             // 12" + "1 , removeLastText count the + and space
             removeLastText(number: 3)
+            textScreen.append(symbol)
             }
         }
     }
@@ -230,12 +233,6 @@ public class Calculator {
     }
     /// func called after making a result if the user want to continue with the result value
     private func addingOperationAfterResult (operatorSymbol: String) {
-        if expressionHaveError == true {
-            textScreen = ""
-        }
-        if textScreen == "Start a new operation" {
-            return
-        }
         if expressionHaveResult == true {
             valueRemoved = 0
             textScreen = "\(textResult) \(operatorSymbol) "

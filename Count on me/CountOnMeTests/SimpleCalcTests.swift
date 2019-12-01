@@ -31,7 +31,7 @@ class SimpleCalcTests: XCTestCase {
         waitForExpectations(timeout: 0.1, handler: nil)
         XCTAssert(calculator.textScreen == "Start a new operation")
     }
-    func testGivenEmptyCalcul_WhenAddingAdditionAfterSubstraction_ThenRemoveNegativeAndSubstractionNumber() {
+    func testGivenEmptyCalcul_WhenAddingOperator_ThenReplaceNegativeAndSubstractionNumber() {
         calculator.textScreen = "550 + 39 - -"
         calculator.add(operator: "/")
         XCTAssert(calculator.textScreen == "550 + 39 / ")
@@ -112,5 +112,20 @@ class SimpleCalcTests: XCTestCase {
         calculator.textScreen = "-"
         calculator.add(operator: "+")
         XCTAssert(calculator.textScreen == "")
+    }
+    func testGivenNumberEndedByDot_WhenAddDot_ThenDoNotAddDot() {
+        calculator.textScreen = "2."
+        calculator.addDot()
+        XCTAssert(calculator.textScreen == "2.")
+    }
+    func testGivenOperationEndedByOperator_WhenAddDifferentOperatorThanTheLastOperatorOfTextScreen_ThenReplaceIt() {
+        calculator.textScreen = "2 x "
+        calculator.add(operator: "+")
+        XCTAssert(calculator.textScreen == "2 + ")
+    }
+    func testGivenOperationWithLastOperator_WhenAddByMultiplicationOperator_ThenReplaceLastOperatorByMultiplcationOperator() {
+        calculator.textScreen = "2 + "
+        calculator.add(operator: "x")
+        XCTAssert(calculator.textScreen == "2 x ")
     }
 }
