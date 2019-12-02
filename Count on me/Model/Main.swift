@@ -106,6 +106,11 @@ public class Calculator {
             textScreen.append(" = ")
             // looking for multiplication and division
             for (count, index) in operationsToReduce.enumerated() {
+                if operationsToReduce[0] == "Start a new operation"{
+                    textScreen = "Start a new operation"
+                    sendNotification(name: "updateScreen")
+                    return
+                }
                 if index.hasPrefix("x") || index.hasPrefix("/") {
                     operationsToReduce = reduceOperation(operationToReduce: operationsToReduce,
                         index: count - valueRemoved)
@@ -174,17 +179,16 @@ public class Calculator {
             sendNotification(name: "errorDivideByZero")
             clear()
             return ["Start a new operation"]
-        } else {
-            result = calculateOperation(left: left, operand: operand, right: right)
-            result = roundingValue(value: result)
-            var operation = operationToReduce
-            operation[count - 1] = "\(result)"
-            operation.remove(at: count)
-            valueRemoved += 1
-            operation.remove(at: count)
-            valueRemoved += 1
-            return operation
         }
+        result = calculateOperation(left: left, operand: operand, right: right)
+        result = roundingValue(value: result)
+        var operation = operationToReduce
+        operation[count - 1] = "\(result)"
+        operation.remove(at: count)
+        valueRemoved += 1
+        operation.remove(at: count)
+        valueRemoved += 1
+        return operation
     }
     /// Returns the operation of 3 elements
     /// from the given components.
