@@ -251,11 +251,9 @@ public class Calculator {
     }
     /// function to prevent error from divide by zero
     private func divideByZero (numberRight: Float, operand: String) -> Bool {
-        var rightIsZero = false
         if operand == "/"{
             if numberRight == 0 {
-                rightIsZero = true
-                return rightIsZero
+                return true
             }
         }
         return false
