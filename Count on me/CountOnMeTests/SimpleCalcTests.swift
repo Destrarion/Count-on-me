@@ -128,4 +128,8 @@ class SimpleCalcTests: XCTestCase {
         calculator.add(operator: "x")
         XCTAssert(calculator.textScreen == "2 x ")
     }
+    func testGivenEmptyScreen_WhenAddingNumber_ThenAddNumber() {
+        calculator.add(number: "2")
+        XCTAssert(calculator.textScreen == "2")
+    }
 }
