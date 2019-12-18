@@ -10,7 +10,7 @@ import Foundation
 public class Calculator {
     var textScreen: String = ""
     private var textResult: String = ""
-    // func called when adding number
+    /// Function used for adding number in textScreen.
     func add(number: String) {
         if expressionHaveResult || expressionHaveError {
             textScreen = ""
@@ -28,18 +28,18 @@ public class Calculator {
     /// - Operator Symbol:
     ///     - Addition: Add a addition symbol or remve a negative symbol.
     ///     - Substraction: Add a symbol of substraction or add a negative symbol.
-    ///     - Multiplication: Add
-    ///     - Division :
+    ///     - Multiplication: Add a symbol of multiplication.
+    ///     - Division : Add a symbol of division.
     /// - Parameters:
     ///     - symbol: Define the symbol of operand you want to add.
     func add(operator symbol: String) {
         switch symbol {
         case "+":
-            if emptyScreen() || expressionHaveError {
+            if emptyScreen || expressionHaveError {
                     return
                 } else if negativeSymbolAlreadyAdded() {
                     removeLastText(number: 1)
-                } else if lastTextIsOperator() {
+                } else if lastTextIsOperator {
                     replaceLastOperator(" + ")
                 } else {
                     addingOperationAfterResult(operatorSymbol: "+")
@@ -47,7 +47,7 @@ public class Calculator {
                 }
             sendNotification(name: "updateScreen")
         case "-":
-            if emptyScreen() || expressionHaveError {
+            if emptyScreen || expressionHaveError {
                     clear()
                     textScreen += "-"
                 } else if textScreen == "-"{
@@ -55,7 +55,7 @@ public class Calculator {
                 } else if negativeSymbolAlreadyAdded() == true {
                     removeLastText(number: 3)
                     textScreen += "- -"
-                } else if lastTextIsOperator() {
+                } else if lastTextIsOperator {
                     textScreen += "-"
                 } else if expressionHaveResult == true {
                 addingOperationAfterResult(operatorSymbol: "-")
@@ -63,12 +63,12 @@ public class Calculator {
                 textScreen +=  " - "
             }
         default:
-            if emptyScreen() || expressionHaveError {
+            if emptyScreen || expressionHaveError {
                     return
                 } else if negativeSymbolAlreadyAdded() {
                     removeLastText(number: 4)
                     textScreen += " \(symbol) "
-                } else if lastTextIsOperator() {
+                } else if lastTextIsOperator {
                     replaceLastOperator(" \(symbol) ")
                 } else {
                 addingOperationAfterResult(operatorSymbol: symbol)
@@ -80,12 +80,12 @@ public class Calculator {
     /// Function to add dot
     /// If it add 0. when it got no prefix that as been a number
     func addDot() {
-        if lastTextIsDot() || dotAlreadyAddedToLastNumber() {
+        if lastTextIsDot || dotAlreadyAddedToLastNumber {
             return
         }
-        if emptyScreen() || expressionHaveError {
+        if emptyScreen || expressionHaveError {
             textScreen = "0."
-        } else if lastTextIsOperator() {
+        } else if lastTextIsOperator {
             textScreen.append("0.")
         } else {
             textScreen += "."
@@ -215,7 +215,7 @@ public class Calculator {
     }
     /// Method called for replacing the last operator
     private func replaceLastOperator(_ symbol: String) {
-        if lastTextIsOperator() == true {
+        if lastTextIsOperator == true {
             if textScreen == "-"{
                 removeLastText(number: 1)
             } else {
@@ -226,7 +226,7 @@ public class Calculator {
         }
     }
     /// Boolean if the last text is one of the operator symbol
-    private func lastTextIsOperator() -> Bool {
+    private var lastTextIsOperator: Bool {
         if elements.last == "+" ||
             elements.last == "-" ||
             elements.last == "x" ||
@@ -258,7 +258,7 @@ public class Calculator {
         }
         return false
     }
-    private func emptyScreen() -> Bool {
+    private var emptyScreen: Bool {
         if textScreen == ""{
             return true
         }
@@ -288,7 +288,7 @@ public class Calculator {
         }
     }
     /// Boolean used to check if the last number contain a dot.
-    private func lastTextIsDot () -> Bool {
+    private var lastTextIsDot: Bool {
         if textScreen != ""{
             if (elements.last?.hasSuffix("."))! {
                 return true
@@ -296,7 +296,8 @@ public class Calculator {
         }
         return false
     }
-    private func dotAlreadyAddedToLastNumber() -> Bool {
+    /// A boolean used to check if the last number already contain a dot, used to prevent double dot in a number.
+    private var dotAlreadyAddedToLastNumber: Bool {
         if textScreen != ""{
             if (elements.last?.contains("."))! {
                 return true
